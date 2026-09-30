@@ -1,6 +1,7 @@
 import { createLocalReq, getPayload } from 'payload'
 import { seed } from '@/endpoints/seed'
 import config from '@payload-config'
+import { revalidatePath } from 'next/cache'
 import { headers } from 'next/headers'
 
 import type { User } from '@/payload-types'
@@ -27,6 +28,9 @@ export async function POST(): Promise<Response> {
     const payloadReq = await createLocalReq({ user }, payload)
 
     await seed({ payload, req: payloadReq })
+
+    // Invalida todas las páginas en caché para que el sitio muestre los datos nuevos al instante
+    revalidatePath('/', 'layout')
 
     return Response.json({ success: true })
   } catch (e) {

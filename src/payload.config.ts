@@ -5,6 +5,8 @@ import { buildConfig, PayloadRequest } from 'payload'
 import { fileURLToPath } from 'url'
 import { es } from '@payloadcms/translations/languages/es'
 
+import { migrations } from './migrations'
+
 import { Categories } from './collections/Categories'
 import { Especialidades } from './collections/Especialidades'
 import { Media } from './collections/Media'
@@ -78,6 +80,9 @@ export default buildConfig({
     pool: {
       connectionString: process.env.DATABASE_URL || '',
     },
+    // En desarrollo Payload sincroniza el esquema solo ("push"). En producción
+    // aplica estas migraciones al iniciar, así una base vacía queda lista.
+    prodMigrations: migrations,
   }),
   collections: [Pages, Posts, Media, Categories, Especialidades, Profesionales, Turnos, Users],
   cors: [getServerSideURL()].filter(Boolean),
