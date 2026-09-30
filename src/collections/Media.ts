@@ -9,7 +9,7 @@ import path from 'path'
 import { fileURLToPath } from 'url'
 
 import { anyone } from '../access/anyone'
-import { authenticated } from '../access/authenticated'
+import { gestionaContenidos } from '../access/roles'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -21,11 +21,14 @@ export const Media: CollectionConfig = {
     plural: 'Biblioteca de medios',
   },
   folders: true,
+  admin: {
+    group: 'Contenidos',
+  },
   access: {
-    create: authenticated,
-    delete: authenticated,
+    create: gestionaContenidos,
+    delete: gestionaContenidos,
     read: anyone,
-    update: authenticated,
+    update: gestionaContenidos,
   },
   fields: [
     {

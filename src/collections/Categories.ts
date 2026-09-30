@@ -1,7 +1,7 @@
 import type { CollectionConfig } from 'payload'
 
 import { anyone } from '../access/anyone'
-import { authenticated } from '../access/authenticated'
+import { gestionaContenidos } from '../access/roles'
 import { slugField } from 'payload'
 
 export const Categories: CollectionConfig = {
@@ -11,12 +11,13 @@ export const Categories: CollectionConfig = {
     plural: 'Categorías',
   },
   access: {
-    create: authenticated,
-    delete: authenticated,
+    create: gestionaContenidos,
+    delete: gestionaContenidos,
     read: anyone,
-    update: authenticated,
+    update: gestionaContenidos,
   },
   admin: {
+    group: 'Contenidos',
     useAsTitle: 'title',
   },
   fields: [
