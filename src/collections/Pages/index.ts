@@ -1,14 +1,16 @@
 import type { CollectionConfig } from 'payload'
 
-import { authenticated } from '../../access/authenticated'
+import { gestionaContenidos, visiblePara } from '../../access/roles'
 import { authenticatedOrPublished } from '../../access/authenticatedOrPublished'
 import { Archive } from '../../blocks/ArchiveBlock/config'
 import { CallToAction } from '../../blocks/CallToAction/config'
 import { Content } from '../../blocks/Content/config'
+import { EspecialidadesDestacadas } from '../../blocks/EspecialidadesDestacadas/config'
 import { FormBlock } from '../../blocks/Form/config'
 import { MediaBlock } from '../../blocks/MediaBlock/config'
 import { hero } from '@/heros/config'
 import { slugField } from 'payload'
+import { slugifyPayload } from '../../utilities/slugify'
 import { populatePublishedAt } from '../../hooks/populatePublishedAt'
 import { generatePreviewPath } from '../../utilities/generatePreviewPath'
 import { revalidateDelete, revalidatePage } from './hooks/revalidatePage'
@@ -23,11 +25,15 @@ import {
 
 export const Pages: CollectionConfig<'pages'> = {
   slug: 'pages',
+  labels: {
+    singular: 'Página',
+    plural: 'Páginas',
+  },
   access: {
-    create: authenticated,
-    delete: authenticated,
+    create: gestionaContenidos,
+    delete: gestionaContenidos,
     read: authenticatedOrPublished,
-    update: authenticated,
+    update: gestionaContenidos,
   },
   // This config controls what's populated by default when a page is referenced
   // https://payloadcms.com/docs/queries/select#defaultpopulate-collection-config-property
@@ -37,6 +43,8 @@ export const Pages: CollectionConfig<'pages'> = {
     slug: true,
   },
   admin: {
+    group: 'Contenidos',
+    hidden: visiblePara('admin', 'editor'),
     defaultColumns: ['title', 'slug', 'updatedAt'],
     livePreview: {
       url: ({ data, req }) =>
@@ -58,6 +66,7 @@ export const Pages: CollectionConfig<'pages'> = {
     {
       name: 'title',
       type: 'text',
+      label: 'Título',
       required: true,
     },
     {
@@ -65,21 +74,22 @@ export const Pages: CollectionConfig<'pages'> = {
       tabs: [
         {
           fields: [hero],
-          label: 'Hero',
+          label: 'Portada',
         },
         {
           fields: [
             {
               name: 'layout',
               type: 'blocks',
-              blocks: [CallToAction, Content, MediaBlock, Archive, FormBlock],
+              label: 'Bloques de la página',
+              blocks: [CallToAction, Content, MediaBlock, Archive, FormBlock, EspecialidadesDestacadas],
               required: true,
               admin: {
                 initCollapsed: true,
               },
             },
           ],
-          label: 'Content',
+          label: 'Contenido',
         },
         {
           name: 'meta',
@@ -113,11 +123,13 @@ export const Pages: CollectionConfig<'pages'> = {
     {
       name: 'publishedAt',
       type: 'date',
+      label: 'Fecha de publicación',
       admin: {
+        date: { displayFormat: 'dd/MM/yyyy' },
         position: 'sidebar',
       },
     },
-    slugField(),
+    slugField({ slugify: slugifyPayload }),
   ],
   hooks: {
     afterChange: [revalidatePage],

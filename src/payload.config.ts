@@ -3,17 +3,25 @@ import sharp from 'sharp'
 import path from 'path'
 import { buildConfig, PayloadRequest } from 'payload'
 import { fileURLToPath } from 'url'
+import { es } from '@payloadcms/translations/languages/es'
+
+import { migrations } from './migrations'
 
 import { Categories } from './collections/Categories'
+import { Especialidades } from './collections/Especialidades'
 import { Media } from './collections/Media'
 import { Pages } from './collections/Pages'
 import { Posts } from './collections/Posts'
+import { Profesionales } from './collections/Profesionales'
+import { Turnos } from './collections/Turnos'
 import { Users } from './collections/Users'
 import { Footer } from './Footer/config'
 import { Header } from './Header/config'
+import { Institucion } from './globals/Institucion/config'
 import { plugins } from './plugins'
 import { defaultLexical } from '@/fields/defaultLexical'
 import { getServerSideURL } from './utilities/getURL'
+import { sitio } from './config/sitio'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -21,13 +29,24 @@ const dirname = path.dirname(filename)
 export default buildConfig({
   admin: {
     components: {
-      // The `BeforeLogin` component renders a message that you see while logging into your admin panel.
-      // Feel free to delete this at any time. Simply remove the line below.
+      // Mensaje en la pantalla de ingreso al panel
       beforeLogin: ['@/components/BeforeLogin'],
-      // The `BeforeDashboard` component renders the 'welcome' block that you see after logging into your admin panel.
-      // Feel free to delete this at any time. Simply remove the line below.
-      beforeDashboard: ['@/components/BeforeDashboard'],
+      // Bienvenida en el inicio del panel
+      beforeDashboard: ['@/components/BeforeDashboard', '@/components/TurnosDeHoy'],
+      // Logo e ícono propios en lugar de los de Payload
+      graphics: {
+        Icon: '@/components/AdminGraphics#IconoAdmin',
+        Logo: '@/components/AdminGraphics#LogoAdmin',
+      },
     },
+    meta: {
+      icons: [{ rel: 'icon', type: 'image/svg+xml', url: '/favicon.svg' }],
+      titleSuffix: ` — ${sitio.nombre}`,
+    },
+    // Sin Gravatar: no se envía el hash del email del personal a un servicio externo
+    avatar: 'default',
+    // Fechas del panel en formato argentino
+    dateFormat: 'dd/MM/yyyy HH:mm',
     importMap: {
       baseDir: path.resolve(dirname),
     },
@@ -35,7 +54,7 @@ export default buildConfig({
     livePreview: {
       breakpoints: [
         {
-          label: 'Mobile',
+          label: 'Celular',
           name: 'mobile',
           width: 375,
           height: 667,
@@ -47,7 +66,7 @@ export default buildConfig({
           height: 1024,
         },
         {
-          label: 'Desktop',
+          label: 'Escritorio',
           name: 'desktop',
           width: 1440,
           height: 900,
@@ -61,10 +80,18 @@ export default buildConfig({
     pool: {
       connectionString: process.env.DATABASE_URL || '',
     },
+    // En desarrollo Payload sincroniza el esquema solo ("push"). En producción
+    // aplica estas migraciones al iniciar, así una base vacía queda lista.
+    prodMigrations: migrations,
   }),
-  collections: [Pages, Posts, Media, Categories, Users],
+  collections: [Pages, Posts, Media, Categories, Especialidades, Profesionales, Turnos, Users],
   cors: [getServerSideURL()].filter(Boolean),
-  globals: [Header, Footer],
+  globals: [Header, Footer, Institucion],
+  // Panel de administración en español
+  i18n: {
+    fallbackLanguage: 'es',
+    supportedLanguages: { es },
+  },
   plugins,
   secret: process.env.PAYLOAD_SECRET,
   sharp,

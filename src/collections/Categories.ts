@@ -1,27 +1,36 @@
 import type { CollectionConfig } from 'payload'
 
 import { anyone } from '../access/anyone'
-import { authenticated } from '../access/authenticated'
+import { gestionaContenidos, visiblePara } from '../access/roles'
 import { slugField } from 'payload'
+import { slugifyPayload } from '../utilities/slugify'
 
 export const Categories: CollectionConfig = {
   slug: 'categories',
+  labels: {
+    singular: 'Categoría',
+    plural: 'Categorías',
+  },
   access: {
-    create: authenticated,
-    delete: authenticated,
+    create: gestionaContenidos,
+    delete: gestionaContenidos,
     read: anyone,
-    update: authenticated,
+    update: gestionaContenidos,
   },
   admin: {
+    group: 'Contenidos',
+    hidden: visiblePara('admin', 'editor'),
     useAsTitle: 'title',
   },
   fields: [
     {
       name: 'title',
       type: 'text',
+      label: 'Nombre',
       required: true,
     },
     slugField({
+      slugify: slugifyPayload,
       position: undefined,
     }),
   ],

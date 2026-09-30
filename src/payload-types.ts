@@ -71,6 +71,9 @@ export interface Config {
     posts: Post;
     media: Media;
     categories: Category;
+    especialidades: Especialidad;
+    profesionales: Profesional;
+    turnos: Turno;
     users: User;
     redirects: Redirect;
     forms: Form;
@@ -93,6 +96,9 @@ export interface Config {
     posts: PostsSelect<false> | PostsSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
     categories: CategoriesSelect<false> | CategoriesSelect<true>;
+    especialidades: EspecialidadesSelect<false> | EspecialidadesSelect<true>;
+    profesionales: ProfesionalesSelect<false> | ProfesionalesSelect<true>;
+    turnos: TurnosSelect<false> | TurnosSelect<true>;
     users: UsersSelect<false> | UsersSelect<true>;
     redirects: RedirectsSelect<false> | RedirectsSelect<true>;
     forms: FormsSelect<false> | FormsSelect<true>;
@@ -106,16 +112,18 @@ export interface Config {
     'payload-migrations': PayloadMigrationsSelect<false> | PayloadMigrationsSelect<true>;
   };
   db: {
-    defaultIDType: string;
+    defaultIDType: number;
   };
   fallbackLocale: null;
   globals: {
     header: Header;
     footer: Footer;
+    institucion: Institucion;
   };
   globalsSelect: {
     header: HeaderSelect<false> | HeaderSelect<true>;
     footer: FooterSelect<false> | FooterSelect<true>;
+    institucion: InstitucionSelect<false> | InstitucionSelect<true>;
   };
   locale: null;
   widgets: {
@@ -156,10 +164,10 @@ export interface UserAuthOperations {
  * via the `definition` "pages".
  */
 export interface Page {
-  id: string;
+  id: number;
   title: string;
   hero: {
-    type: 'none' | 'highImpact' | 'mediumImpact' | 'lowImpact';
+    type: 'none' | 'confluencia' | 'highImpact' | 'mediumImpact' | 'lowImpact';
     richText?: {
       root: {
         type: string;
@@ -183,31 +191,31 @@ export interface Page {
             reference?:
               | ({
                   relationTo: 'pages';
-                  value: string | Page;
+                  value: number | Page;
                 } | null)
               | ({
                   relationTo: 'posts';
-                  value: string | Post;
+                  value: number | Post;
                 } | null);
             url?: string | null;
             label: string;
             /**
-             * Choose how the link should be rendered.
+             * Cómo se ve el enlace.
              */
             appearance?: ('default' | 'outline') | null;
           };
           id?: string | null;
         }[]
       | null;
-    media?: (string | null) | Media;
+    media?: (number | null) | Media;
   };
-  layout: (CallToActionBlock | ContentBlock | MediaBlock | ArchiveBlock | FormBlock)[];
+  layout: (CallToActionBlock | ContentBlock | MediaBlock | ArchiveBlock | FormBlock | EspecialidadesDestacadasBlock)[];
   meta?: {
     title?: string | null;
     /**
      * Maximum upload file size: 12MB. Recommended file size for images is <500KB.
      */
-    image?: (string | null) | Media;
+    image?: (number | null) | Media;
     description?: string | null;
   };
   publishedAt?: string | null;
@@ -221,13 +229,15 @@ export interface Page {
   _status?: ('draft' | 'published') | null;
 }
 /**
+ * Artículos de prevención y cuidado de la salud. Cada nota puede indicar qué profesional la revisó.
+ *
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "posts".
  */
 export interface Post {
-  id: string;
+  id: number;
   title: string;
-  heroImage?: (string | null) | Media;
+  heroImage?: (number | null) | Media;
   content: {
     root: {
       type: string;
@@ -243,18 +253,27 @@ export interface Post {
     };
     [k: string]: unknown;
   };
-  relatedPosts?: (string | Post)[] | null;
-  categories?: (string | Category)[] | null;
+  relatedPosts?: (number | Post)[] | null;
+  categories?: (number | Category)[] | null;
   meta?: {
     title?: string | null;
     /**
      * Maximum upload file size: 12MB. Recommended file size for images is <500KB.
      */
-    image?: (string | null) | Media;
+    image?: (number | null) | Media;
     description?: string | null;
   };
   publishedAt?: string | null;
-  authors?: (string | User)[] | null;
+  authors?: (number | User)[] | null;
+  /**
+   * Profesional de la cartilla que validó el contenido médico.
+   */
+  revisadoPor?: (number | null) | Profesional;
+  /**
+   * Se calcula solo al guardar.
+   */
+  tiempoLectura?: number | null;
+  mostrarAviso?: boolean | null;
   populatedAuthors?:
     | {
         id?: string | null;
@@ -275,8 +294,11 @@ export interface Post {
  * via the `definition` "media".
  */
 export interface Media {
-  id: string;
-  alt?: string | null;
+  id: number;
+  /**
+   * Describí la imagen para quienes usan lector de pantalla (ej.: "Médica tomando la presión a un paciente").
+   */
+  alt: string;
   caption?: {
     root: {
       type: string;
@@ -292,7 +314,7 @@ export interface Media {
     };
     [k: string]: unknown;
   } | null;
-  folder?: (string | null) | FolderInterface;
+  folder?: (number | null) | FolderInterface;
   updatedAt: string;
   createdAt: string;
   url?: string | null;
@@ -368,18 +390,18 @@ export interface Media {
  * via the `definition` "payload-folders".
  */
 export interface FolderInterface {
-  id: string;
+  id: number;
   name: string;
-  folder?: (string | null) | FolderInterface;
+  folder?: (number | null) | FolderInterface;
   documentsAndFolders?: {
     docs?: (
       | {
           relationTo?: 'payload-folders';
-          value: string | FolderInterface;
+          value: number | FolderInterface;
         }
       | {
           relationTo?: 'media';
-          value: string | Media;
+          value: number | Media;
         }
     )[];
     hasNextPage?: boolean;
@@ -394,17 +416,17 @@ export interface FolderInterface {
  * via the `definition` "categories".
  */
 export interface Category {
-  id: string;
+  id: number;
   title: string;
   /**
    * When enabled, the slug will auto-generate from the title field on save and autosave.
    */
   generateSlug?: boolean | null;
   slug: string;
-  parent?: (string | null) | Category;
+  parent?: (number | null) | Category;
   breadcrumbs?:
     | {
-        doc?: (string | null) | Category;
+        doc?: (number | null) | Category;
         url?: string | null;
         label?: string | null;
         id?: string | null;
@@ -418,8 +440,16 @@ export interface Category {
  * via the `definition` "users".
  */
 export interface User {
-  id: string;
-  name?: string | null;
+  id: number;
+  name: string;
+  /**
+   * Definen qué puede ver y hacer cada persona en el panel.
+   */
+  roles: ('admin' | 'editor' | 'recepcion' | 'profesional')[];
+  /**
+   * Para el rol Profesional: vincula la cuenta con su ficha y así solo ve su propia agenda.
+   */
+  profesional?: (number | null) | Profesional;
   updatedAt: string;
   createdAt: string;
   email: string;
@@ -427,6 +457,7 @@ export interface User {
   resetPasswordExpiration?: string | null;
   salt?: string | null;
   hash?: string | null;
+  resetPasswordRequestedAt?: string | null;
   loginAttempts?: number | null;
   lockUntil?: string | null;
   sessions?:
@@ -438,6 +469,157 @@ export interface User {
     | null;
   password?: string | null;
   collection: 'users';
+}
+/**
+ * Cartilla de profesionales. Solo los marcados como visibles aparecen en el sitio.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "profesionales".
+ */
+export interface Profesional {
+  id: number;
+  tratamiento?: ('Dr.' | 'Dra.' | 'Lic.') | null;
+  nombre: string;
+  apellido: string;
+  /**
+   * Se completa solo con el tratamiento, el nombre y el apellido.
+   */
+  nombreCompleto?: string | null;
+  /**
+   * MP (provincial) o MN (nacional) seguida del número. Ej.: MP 4521
+   */
+  matricula: string;
+  especialidades: (number | Especialidad)[];
+  foto?: (number | null) | Media;
+  bio?: string | null;
+  /**
+   * Con estos datos se calculan los horarios disponibles para pedir turno.
+   */
+  atencion: {
+    dias: ('lunes' | 'martes' | 'miercoles' | 'jueves' | 'viernes' | 'sabado')[];
+    horaInicio:
+      | '07:00'
+      | '07:30'
+      | '08:00'
+      | '08:30'
+      | '09:00'
+      | '09:30'
+      | '10:00'
+      | '10:30'
+      | '11:00'
+      | '11:30'
+      | '12:00'
+      | '12:30'
+      | '13:00'
+      | '13:30'
+      | '14:00'
+      | '14:30'
+      | '15:00'
+      | '15:30'
+      | '16:00'
+      | '16:30'
+      | '17:00'
+      | '17:30'
+      | '18:00'
+      | '18:30'
+      | '19:00'
+      | '19:30'
+      | '20:00'
+      | '20:30'
+      | '21:00';
+    horaFin:
+      | '07:00'
+      | '07:30'
+      | '08:00'
+      | '08:30'
+      | '09:00'
+      | '09:30'
+      | '10:00'
+      | '10:30'
+      | '11:00'
+      | '11:30'
+      | '12:00'
+      | '12:30'
+      | '13:00'
+      | '13:30'
+      | '14:00'
+      | '14:30'
+      | '15:00'
+      | '15:30'
+      | '16:00'
+      | '16:30'
+      | '17:00'
+      | '17:30'
+      | '18:00'
+      | '18:30'
+      | '19:00'
+      | '19:30'
+      | '20:00'
+      | '20:30'
+      | '21:00';
+    duracionTurno: number;
+  };
+  obrasSociales?:
+    ('particular' | 'issn' | 'pami' | 'osde' | 'swiss-medical' | 'galeno' | 'sancor-salud' | 'osecac')[] | null;
+  activo?: boolean | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * Áreas de atención. Se muestran en el sitio y se usan para filtrar la cartilla y pedir turnos.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "especialidades".
+ */
+export interface Especialidad {
+  id: number;
+  nombre: string;
+  icono:
+    | 'estetoscopio'
+    | 'corazon'
+    | 'bebe'
+    | 'hueso'
+    | 'cerebro'
+    | 'ojo'
+    | 'sonrisa'
+    | 'mano'
+    | 'manzana'
+    | 'oido'
+    | 'venus'
+    | 'persona'
+    | 'microscopio'
+    | 'jeringa';
+  /**
+   * Menor número, aparece primero.
+   */
+  orden?: number | null;
+  destacada?: boolean | null;
+  /**
+   * Una o dos oraciones para las tarjetas (máximo 180 caracteres).
+   */
+  resumen: string;
+  descripcion?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  /**
+   * When enabled, the slug will auto-generate from the title field on save and autosave.
+   */
+  generateSlug?: boolean | null;
+  slug: string;
+  updatedAt: string;
+  createdAt: string;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -467,16 +649,16 @@ export interface CallToActionBlock {
           reference?:
             | ({
                 relationTo: 'pages';
-                value: string | Page;
+                value: number | Page;
               } | null)
             | ({
                 relationTo: 'posts';
-                value: string | Post;
+                value: number | Post;
               } | null);
           url?: string | null;
           label: string;
           /**
-           * Choose how the link should be rendered.
+           * Cómo se ve el enlace.
            */
           appearance?: ('default' | 'outline') | null;
         };
@@ -517,16 +699,16 @@ export interface ContentBlock {
           reference?:
             | ({
                 relationTo: 'pages';
-                value: string | Page;
+                value: number | Page;
               } | null)
             | ({
                 relationTo: 'posts';
-                value: string | Post;
+                value: number | Post;
               } | null);
           url?: string | null;
           label: string;
           /**
-           * Choose how the link should be rendered.
+           * Cómo se ve el enlace.
            */
           appearance?: ('default' | 'outline') | null;
         };
@@ -542,7 +724,7 @@ export interface ContentBlock {
  * via the `definition` "MediaBlock".
  */
 export interface MediaBlock {
-  media: string | Media;
+  media: number | Media;
   id?: string | null;
   blockName?: string | null;
   blockType: 'mediaBlock';
@@ -569,12 +751,12 @@ export interface ArchiveBlock {
   } | null;
   populateBy?: ('collection' | 'selection') | null;
   relationTo?: 'posts' | null;
-  categories?: (string | Category)[] | null;
+  categories?: (number | Category)[] | null;
   limit?: number | null;
   selectedDocs?:
     | {
         relationTo: 'posts';
-        value: string | Post;
+        value: number | Post;
       }[]
     | null;
   id?: string | null;
@@ -586,7 +768,7 @@ export interface ArchiveBlock {
  * via the `definition` "FormBlock".
  */
 export interface FormBlock {
-  form: string | Form;
+  form: number | Form;
   enableIntro?: boolean | null;
   introContent?: {
     root: {
@@ -612,7 +794,7 @@ export interface FormBlock {
  * via the `definition` "forms".
  */
 export interface Form {
-  id: string;
+  id: number;
   title: string;
   fields?:
     | (
@@ -724,9 +906,6 @@ export interface Form {
       )[]
     | null;
   submitButtonLabel?: string | null;
-  /**
-   * Choose whether to display an on-page message or redirect to a different page after they submit the form.
-   */
   confirmationType?: ('message' | 'redirect') | null;
   confirmationMessage?: {
     root: {
@@ -746,9 +925,6 @@ export interface Form {
   redirect?: {
     url: string;
   };
-  /**
-   * Send custom emails when the form submits. Use comma separated lists to send the same email to multiple recipients. To reference a value from this form, wrap that field's name with double curly brackets, i.e. {{firstName}}. You can use a wildcard {{*}} to output all data and {{*:table}} to format it as an HTML table in the email.
-   */
   emails?:
     | {
         emailTo?: string | null;
@@ -757,9 +933,6 @@ export interface Form {
         replyTo?: string | null;
         emailFrom?: string | null;
         subject: string;
-        /**
-         * Enter the message that should be sent in this email.
-         */
         message?: {
           root: {
             type: string;
@@ -783,12 +956,66 @@ export interface Form {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "EspecialidadesDestacadasBlock".
+ */
+export interface EspecialidadesDestacadasBlock {
+  titulo: string;
+  introduccion?: string | null;
+  cantidad?: number | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'especialidadesDestacadas';
+}
+/**
+ * Agenda de turnos. Los pedidos del sitio entran como "Pendiente de confirmación".
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "turnos".
+ */
+export interface Turno {
+  id: number;
+  especialidad: number | Especialidad;
+  profesional: number | Profesional;
+  fecha: string;
+  /**
+   * Formato 24 h (ej.: 08:20). Tiene que ser un horario de la agenda del profesional.
+   */
+  hora: string;
+  paciente: {
+    nombre: string;
+    apellido: string;
+    dni: string;
+    telefono: string;
+    email: string;
+    obraSocial: 'particular' | 'issn' | 'pami' | 'osde' | 'swiss-medical' | 'galeno' | 'sancor-salud' | 'osecac';
+  };
+  motivo?: string | null;
+  /**
+   * Solo las ve el personal. Nunca se muestran al paciente.
+   */
+  notasInternas?: string | null;
+  estado: 'pendiente' | 'confirmado' | 'cancelado' | 'atendido';
+  /**
+   * Se genera solo. Es el código que recibe el paciente.
+   */
+  codigo?: string | null;
+  creadoDesde?: ('web' | 'panel') | null;
+  claveAgenda?: string | null;
+  /**
+   * Se arma solo con la fecha, la hora y el paciente.
+   */
+  resumen?: string | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "redirects".
  */
 export interface Redirect {
-  id: string;
+  id: number;
   /**
-   * You will need to rebuild the website when changing this field.
+   * Al cambiar este campo hay que volver a compilar el sitio.
    */
   from: string;
   to?: {
@@ -796,11 +1023,11 @@ export interface Redirect {
     reference?:
       | ({
           relationTo: 'pages';
-          value: string | Page;
+          value: number | Page;
         } | null)
       | ({
           relationTo: 'posts';
-          value: string | Post;
+          value: number | Post;
         } | null);
     url?: string | null;
   };
@@ -812,8 +1039,8 @@ export interface Redirect {
  * via the `definition` "form-submissions".
  */
 export interface FormSubmission {
-  id: string;
-  form: string | Form;
+  id: number;
+  form: number | Form;
   submissionData?:
     | {
         field: string;
@@ -831,18 +1058,18 @@ export interface FormSubmission {
  * via the `definition` "search".
  */
 export interface Search {
-  id: string;
+  id: number;
   title?: string | null;
   priority?: number | null;
   doc: {
     relationTo: 'posts';
-    value: string | Post;
+    value: number | Post;
   };
   slug?: string | null;
   meta?: {
     title?: string | null;
     description?: string | null;
-    image?: (string | null) | Media;
+    image?: (number | null) | Media;
   };
   categories?:
     | {
@@ -860,7 +1087,7 @@ export interface Search {
  * via the `definition` "payload-kv".
  */
 export interface PayloadKv {
-  id: string;
+  id: number;
   key: string;
   data:
     | {
@@ -877,7 +1104,7 @@ export interface PayloadKv {
  * via the `definition` "payload-jobs".
  */
 export interface PayloadJob {
-  id: string;
+  id: number;
   /**
    * Input data provided to the job
    */
@@ -969,52 +1196,64 @@ export interface PayloadJob {
  * via the `definition` "payload-locked-documents".
  */
 export interface PayloadLockedDocument {
-  id: string;
+  id: number;
   document?:
     | ({
         relationTo: 'pages';
-        value: string | Page;
+        value: number | Page;
       } | null)
     | ({
         relationTo: 'posts';
-        value: string | Post;
+        value: number | Post;
       } | null)
     | ({
         relationTo: 'media';
-        value: string | Media;
+        value: number | Media;
       } | null)
     | ({
         relationTo: 'categories';
-        value: string | Category;
+        value: number | Category;
+      } | null)
+    | ({
+        relationTo: 'especialidades';
+        value: number | Especialidad;
+      } | null)
+    | ({
+        relationTo: 'profesionales';
+        value: number | Profesional;
+      } | null)
+    | ({
+        relationTo: 'turnos';
+        value: number | Turno;
       } | null)
     | ({
         relationTo: 'users';
-        value: string | User;
+        value: number | User;
       } | null)
     | ({
         relationTo: 'redirects';
-        value: string | Redirect;
+        value: number | Redirect;
       } | null)
     | ({
         relationTo: 'forms';
-        value: string | Form;
+        value: number | Form;
       } | null)
     | ({
         relationTo: 'form-submissions';
-        value: string | FormSubmission;
+        value: number | FormSubmission;
       } | null)
     | ({
         relationTo: 'search';
-        value: string | Search;
+        value: number | Search;
       } | null)
     | ({
         relationTo: 'payload-folders';
-        value: string | FolderInterface;
+        value: number | FolderInterface;
       } | null);
   globalSlug?: string | null;
   user: {
     relationTo: 'users';
-    value: string | User;
+    value: number | User;
   };
   updatedAt: string;
   createdAt: string;
@@ -1024,10 +1263,10 @@ export interface PayloadLockedDocument {
  * via the `definition` "payload-preferences".
  */
 export interface PayloadPreference {
-  id: string;
+  id: number;
   user: {
     relationTo: 'users';
-    value: string | User;
+    value: number | User;
   };
   key?: string | null;
   value?:
@@ -1047,7 +1286,7 @@ export interface PayloadPreference {
  * via the `definition` "payload-migrations".
  */
 export interface PayloadMigration {
-  id: string;
+  id: number;
   name?: string | null;
   batch?: number | null;
   updatedAt: string;
@@ -1089,6 +1328,7 @@ export interface PagesSelect<T extends boolean = true> {
         mediaBlock?: T | MediaBlockSelect<T>;
         archive?: T | ArchiveBlockSelect<T>;
         formBlock?: T | FormBlockSelect<T>;
+        especialidadesDestacadas?: T | EspecialidadesDestacadasBlockSelect<T>;
       };
   meta?:
     | T
@@ -1190,6 +1430,17 @@ export interface FormBlockSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "EspecialidadesDestacadasBlock_select".
+ */
+export interface EspecialidadesDestacadasBlockSelect<T extends boolean = true> {
+  titulo?: T;
+  introduccion?: T;
+  cantidad?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "posts_select".
  */
 export interface PostsSelect<T extends boolean = true> {
@@ -1207,6 +1458,9 @@ export interface PostsSelect<T extends boolean = true> {
       };
   publishedAt?: T;
   authors?: T;
+  revisadoPor?: T;
+  tiempoLectura?: T;
+  mostrarAviso?: T;
   populatedAuthors?:
     | T
     | {
@@ -1335,10 +1589,83 @@ export interface CategoriesSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "especialidades_select".
+ */
+export interface EspecialidadesSelect<T extends boolean = true> {
+  nombre?: T;
+  icono?: T;
+  orden?: T;
+  destacada?: T;
+  resumen?: T;
+  descripcion?: T;
+  generateSlug?: T;
+  slug?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "profesionales_select".
+ */
+export interface ProfesionalesSelect<T extends boolean = true> {
+  tratamiento?: T;
+  nombre?: T;
+  apellido?: T;
+  nombreCompleto?: T;
+  matricula?: T;
+  especialidades?: T;
+  foto?: T;
+  bio?: T;
+  atencion?:
+    | T
+    | {
+        dias?: T;
+        horaInicio?: T;
+        horaFin?: T;
+        duracionTurno?: T;
+      };
+  obrasSociales?: T;
+  activo?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "turnos_select".
+ */
+export interface TurnosSelect<T extends boolean = true> {
+  especialidad?: T;
+  profesional?: T;
+  fecha?: T;
+  hora?: T;
+  paciente?:
+    | T
+    | {
+        nombre?: T;
+        apellido?: T;
+        dni?: T;
+        telefono?: T;
+        email?: T;
+        obraSocial?: T;
+      };
+  motivo?: T;
+  notasInternas?: T;
+  estado?: T;
+  codigo?: T;
+  creadoDesde?: T;
+  claveAgenda?: T;
+  resumen?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "users_select".
  */
 export interface UsersSelect<T extends boolean = true> {
   name?: T;
+  roles?: T;
+  profesional?: T;
   updatedAt?: T;
   createdAt?: T;
   email?: T;
@@ -1346,6 +1673,7 @@ export interface UsersSelect<T extends boolean = true> {
   resetPasswordExpiration?: T;
   salt?: T;
   hash?: T;
+  resetPasswordRequestedAt?: T;
   loginAttempts?: T;
   lockUntil?: T;
   sessions?:
@@ -1636,7 +1964,7 @@ export interface PayloadMigrationsSelect<T extends boolean = true> {
  * via the `definition` "header".
  */
 export interface Header {
-  id: string;
+  id: number;
   navItems?:
     | {
         link: {
@@ -1645,11 +1973,61 @@ export interface Header {
           reference?:
             | ({
                 relationTo: 'pages';
-                value: string | Page;
+                value: number | Page;
               } | null)
             | ({
                 relationTo: 'posts';
-                value: string | Post;
+                value: number | Post;
+              } | null);
+          url?: string | null;
+          label: string;
+        };
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Acción principal que se ve siempre en el encabezado (por ejemplo, "Pedir turno").
+   */
+  botonDestacado?: {
+    mostrar?: boolean | null;
+    link?: {
+      type?: ('reference' | 'custom') | null;
+      newTab?: boolean | null;
+      reference?:
+        | ({
+            relationTo: 'pages';
+            value: number | Page;
+          } | null)
+        | ({
+            relationTo: 'posts';
+            value: number | Post;
+          } | null);
+      url?: string | null;
+      label: string;
+    };
+  };
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "footer".
+ */
+export interface Footer {
+  id: number;
+  navItems?:
+    | {
+        link: {
+          type?: ('reference' | 'custom') | null;
+          newTab?: boolean | null;
+          reference?:
+            | ({
+                relationTo: 'pages';
+                value: number | Page;
+              } | null)
+            | ({
+                relationTo: 'posts';
+                value: number | Post;
               } | null);
           url?: string | null;
           label: string;
@@ -1661,31 +2039,23 @@ export interface Header {
   createdAt?: string | null;
 }
 /**
+ * Teléfonos, dirección y horarios que se muestran en todo el sitio.
+ *
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "footer".
+ * via the `definition` "institucion".
  */
-export interface Footer {
-  id: string;
-  navItems?:
-    | {
-        link: {
-          type?: ('reference' | 'custom') | null;
-          newTab?: boolean | null;
-          reference?:
-            | ({
-                relationTo: 'pages';
-                value: string | Page;
-              } | null)
-            | ({
-                relationTo: 'posts';
-                value: string | Post;
-              } | null);
-          url?: string | null;
-          label: string;
-        };
-        id?: string | null;
-      }[]
-    | null;
+export interface Institucion {
+  id: number;
+  lema?: string | null;
+  telefonoGuardia: string;
+  telefonoTurnos?: string | null;
+  email?: string | null;
+  direccion?: string | null;
+  horario?: string | null;
+  /**
+   * Se muestra en la página de turnos para aclarar que no es un canal de urgencias.
+   */
+  avisoUrgencias?: string | null;
   updatedAt?: string | null;
   createdAt?: string | null;
 }
@@ -1707,6 +2077,20 @@ export interface HeaderSelect<T extends boolean = true> {
               label?: T;
             };
         id?: T;
+      };
+  botonDestacado?:
+    | T
+    | {
+        mostrar?: T;
+        link?:
+          | T
+          | {
+              type?: T;
+              newTab?: T;
+              reference?: T;
+              url?: T;
+              label?: T;
+            };
       };
   updatedAt?: T;
   createdAt?: T;
@@ -1737,6 +2121,22 @@ export interface FooterSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "institucion_select".
+ */
+export interface InstitucionSelect<T extends boolean = true> {
+  lema?: T;
+  telefonoGuardia?: T;
+  telefonoTurnos?: T;
+  email?: T;
+  direccion?: T;
+  horario?: T;
+  avisoUrgencias?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "collections_widget".
  */
 export interface CollectionsWidget {
@@ -1756,14 +2156,17 @@ export interface TaskSchedulePublish {
     doc?:
       | ({
           relationTo: 'pages';
-          value: string | Page;
+          value: number | Page;
         } | null)
       | ({
           relationTo: 'posts';
-          value: string | Post;
+          value: number | Post;
         } | null);
     global?: string | null;
-    user?: (string | null) | User;
+    user?: {
+      relationTo: 'users';
+      value: number | User;
+    } | null;
   };
   output?: unknown;
 }

@@ -1,17 +1,26 @@
 import type { GlobalConfig } from 'payload'
 
+import { gestionaContenidos, visiblePara } from '@/access/roles'
 import { link } from '@/fields/link'
 import { revalidateFooter } from './hooks/revalidateFooter'
 
 export const Footer: GlobalConfig = {
   slug: 'footer',
+  label: 'Pie de página',
+  admin: {
+    group: 'Configuración del sitio',
+    hidden: visiblePara('admin', 'editor'),
+  },
   access: {
     read: () => true,
+    update: gestionaContenidos,
   },
   fields: [
     {
       name: 'navItems',
       type: 'array',
+      label: 'Enlaces del pie',
+      labels: { singular: 'Enlace', plural: 'Enlaces' },
       fields: [
         link({
           appearances: false,

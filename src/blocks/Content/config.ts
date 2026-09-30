@@ -16,19 +16,19 @@ const columnFields: Field[] = [
     defaultValue: 'oneThird',
     options: [
       {
-        label: 'One Third',
+        label: 'Un tercio',
         value: 'oneThird',
       },
       {
-        label: 'Half',
+        label: 'Mitad',
         value: 'half',
       },
       {
-        label: 'Two Thirds',
+        label: 'Dos tercios',
         value: 'twoThirds',
       },
       {
-        label: 'Full',
+        label: 'Ancho completo',
         value: 'full',
       },
     ],
@@ -51,6 +51,7 @@ const columnFields: Field[] = [
   {
     name: 'enableLink',
     type: 'checkbox',
+    label: 'Agregar enlace',
   },
   link({
     overrides: {
@@ -66,10 +67,16 @@ const columnFields: Field[] = [
 export const Content: Block = {
   slug: 'content',
   interfaceName: 'ContentBlock',
+  labels: {
+    plural: 'Contenidos en columnas',
+    singular: 'Contenido en columnas',
+  },
   fields: [
     {
       name: 'columns',
       type: 'array',
+      label: 'Columnas',
+      labels: { singular: 'Columna', plural: 'Columnas' },
       admin: {
         initCollapsed: true,
       },

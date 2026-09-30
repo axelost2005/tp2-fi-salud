@@ -1,7 +1,11 @@
 import { createLocalReq, getPayload } from 'payload'
 import { seed } from '@/endpoints/seed'
 import config from '@payload-config'
+import { revalidatePath } from 'next/cache'
 import { headers } from 'next/headers'
+
+import type { User } from '@/payload-types'
+import { tieneRol } from '@/access/roles'
 
 export const maxDuration = 60 // This function can run for a maximum of 60 seconds
 
@@ -12,8 +16,10 @@ export async function POST(): Promise<Response> {
   // Authenticate by passing request headers
   const { user } = await payload.auth({ headers: requestHeaders })
 
-  if (!user) {
-    return new Response('Action forbidden.', { status: 403 })
+  // El seed borra y vuelve a cargar toda la base: solo un admin puede ejecutarlo
+  // (el template lo permitía a cualquier usuario logueado)
+  if (!user || !tieneRol(user as User, 'admin')) {
+    return new Response('Solo un administrador puede cargar los datos de ejemplo.', { status: 403 })
   }
 
   try {
@@ -22,6 +28,9 @@ export async function POST(): Promise<Response> {
     const payloadReq = await createLocalReq({ user }, payload)
 
     await seed({ payload, req: payloadReq })
+
+    // Invalida todas las páginas en caché para que el sitio muestre los datos nuevos al instante
+    revalidatePath('/', 'layout')
 
     return Response.json({ success: true })
   } catch (e) {

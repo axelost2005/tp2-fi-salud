@@ -1,15 +1,26 @@
-'use client'
-import { cn } from '@/utilities/ui'
-import useClickableCard from '@/utilities/useClickableCard'
+import { Clock3 } from 'lucide-react'
 import Link from 'next/link'
-import React, { Fragment } from 'react'
+import React from 'react'
 
 import type { Post } from '@/payload-types'
 
+import { cn } from '@/utilities/ui'
 import { Media } from '@/components/Media'
+import { MarcaConfluencia } from '@/components/Logo/MarcaConfluencia'
+import { hrefDocumento } from '@/utilities/rutas'
 
-export type CardPostData = Pick<Post, 'slug' | 'categories' | 'meta' | 'title'>
+export type CardPostData = Pick<Post, 'slug' | 'categories' | 'meta' | 'title'> &
+  Partial<Pick<Post, 'tiempoLectura'>>
 
+/**
+ * Tarjeta de novedad. Cambios respecto del template:
+ * - Toda la tarjeta es clickeable con un "enlace estirado" en CSS (el
+ *   pseudo-elemento del título cubre la tarjeta), sin JavaScript: el
+ *   template lo resolvía con refs y eventos de mouse.
+ * - Imagen con proporción fija para que las tarjetas queden parejas.
+ * - Categorías como etiquetas en vez de texto en mayúsculas.
+ * - Si no hay foto se muestra el isotipo (el template decía "No image").
+ */
 export const Card: React.FC<{
   alignItems?: 'center'
   className?: string
@@ -18,62 +29,68 @@ export const Card: React.FC<{
   showCategories?: boolean
   title?: string
 }> = (props) => {
-  const { card, link } = useClickableCard({})
   const { className, doc, relationTo, showCategories, title: titleFromProps } = props
 
-  const { slug, categories, meta, title } = doc || {}
+  const { slug, categories, meta, tiempoLectura, title } = doc || {}
   const { description, image: metaImage } = meta || {}
 
   const hasCategories = categories && Array.isArray(categories) && categories.length > 0
   const titleToUse = titleFromProps || title
   const sanitizedDescription = description?.replace(/\s/g, ' ') // replace non-breaking space with white space
-  const href = `/${relationTo}/${slug}`
+  const href = hrefDocumento(relationTo || 'posts', slug)
 
   return (
     <article
       className={cn(
-        'border border-border rounded-lg overflow-hidden bg-card hover:cursor-pointer',
+        'group relative flex flex-col overflow-hidden rounded-2xl border border-border bg-background transition-colors hover:border-primary/60',
         className,
       )}
-      ref={card.ref}
     >
-      <div className="relative w-full ">
-        {!metaImage && <div className="">No image</div>}
-        {metaImage && typeof metaImage !== 'string' && <Media resource={metaImage} size="33vw" />}
+      <div className="relative aspect-[16/10] w-full overflow-hidden bg-secondary">
+        {metaImage && typeof metaImage === 'object' ? (
+          <Media fill imgClassName="object-cover" resource={metaImage} size="33vw" />
+        ) : (
+          <div className="flex h-full items-center justify-center">
+            <MarcaConfluencia className="h-16 w-16 opacity-60" />
+          </div>
+        )}
       </div>
-      <div className="p-4">
+      <div className="flex flex-1 flex-col gap-3 p-5">
         {showCategories && hasCategories && (
-          <div className="uppercase text-sm mb-4">
+          <ul className="relative z-10 flex flex-wrap gap-2">
             {categories?.map((category, index) => {
-              if (typeof category === 'object') {
-                const { title: titleFromCategory } = category
-
-                const categoryTitle = titleFromCategory || 'Untitled category'
-
-                const isLast = index === categories.length - 1
-
+              if (typeof category === 'object' && category !== null) {
                 return (
-                  <Fragment key={index}>
-                    {categoryTitle}
-                    {!isLast && <Fragment>, &nbsp;</Fragment>}
-                  </Fragment>
+                  <li
+                    className="rounded-full bg-secondary px-2.5 py-0.5 text-sm font-semibold text-secondary-foreground"
+                    key={index}
+                  >
+                    {category.title || 'Sin categoría'}
+                  </li>
                 )
               }
 
               return null
             })}
-          </div>
+          </ul>
         )}
         {titleToUse && (
-          <div className="prose">
-            <h3>
-              <Link className="not-prose" href={href} ref={link.ref}>
-                {titleToUse}
-              </Link>
-            </h3>
-          </div>
+          <h3 className="text-xl leading-snug font-bold">
+            <Link
+              className="after:absolute after:inset-0 after:content-[''] group-hover:text-primary"
+              href={href}
+            >
+              {titleToUse}
+            </Link>
+          </h3>
         )}
-        {description && <div className="mt-2">{description && <p>{sanitizedDescription}</p>}</div>}
+        {description && <p className="text-muted-foreground">{sanitizedDescription}</p>}
+        {tiempoLectura ? (
+          <p className="mt-auto flex items-center gap-1.5 pt-1 text-sm text-muted-foreground">
+            <Clock3 aria-hidden className="size-4" />
+            {tiempoLectura} min de lectura
+          </p>
+        ) : null}
       </div>
     </article>
   )

@@ -12,21 +12,29 @@ import { beforeSyncWithSearch } from '@/search/beforeSync'
 
 import { Page, Post } from '@/payload-types'
 import { getServerSideURL } from '@/utilities/getURL'
+import { sitio } from '@/config/sitio'
+import { hrefDocumento } from '@/utilities/rutas'
+import { esAdmin, gestionaContenidos, gestionaTurnos, visiblePara } from '@/access/roles'
+import { anyone } from '@/access/anyone'
 
 const generateTitle: GenerateTitle<Post | Page> = ({ doc }) => {
-  return doc?.title ? `${doc.title} | Payload Website Template` : 'Payload Website Template'
+  return doc?.title ? `${doc.title} | ${sitio.nombre}` : sitio.nombre
 }
 
-const generateURL: GenerateURL<Post | Page> = ({ doc }) => {
+const generateURL: GenerateURL<Post | Page> = ({ collectionConfig, doc }) => {
   const url = getServerSideURL()
+  const coleccion = collectionConfig?.slug === 'posts' ? 'posts' : 'pages'
 
-  return doc?.slug ? `${url}/${doc.slug}` : url
+  return doc?.slug ? `${url}${hrefDocumento(coleccion, doc.slug)}` : url
 }
 
 export const plugins: Plugin[] = [
   redirectsPlugin({
     collections: ['pages', 'posts'],
     overrides: {
+      labels: { singular: 'Redirección', plural: 'Redirecciones' },
+      admin: { group: 'Administración', hidden: visiblePara('admin') },
+      access: { create: esAdmin, delete: esAdmin, read: anyone, update: esAdmin },
       // @ts-expect-error - This is a valid override, mapped fields don't resolve to the same type
       fields: ({ defaultFields }) => {
         return defaultFields.map((field) => {
@@ -34,7 +42,7 @@ export const plugins: Plugin[] = [
             return {
               ...field,
               admin: {
-                description: 'You will need to rebuild the website when changing this field.',
+                description: 'Al cambiar este campo hay que volver a compilar el sitio.',
               },
             }
           }
@@ -58,7 +66,16 @@ export const plugins: Plugin[] = [
     fields: {
       payment: false,
     },
+    formSubmissionOverrides: {
+      labels: { singular: 'Envío de formulario', plural: 'Envíos de formularios' },
+      admin: { group: 'Formularios' },
+      // Cualquiera puede enviar un formulario, pero solo recepción y admins leen los mensajes
+      access: { create: anyone, delete: esAdmin, read: gestionaTurnos, update: gestionaTurnos },
+    },
     formOverrides: {
+      labels: { singular: 'Formulario', plural: 'Formularios' },
+      admin: { group: 'Formularios', hidden: visiblePara('admin', 'editor') },
+      access: { create: gestionaContenidos, delete: gestionaContenidos, read: anyone, update: gestionaContenidos },
       fields: ({ defaultFields }) => {
         return defaultFields.map((field) => {
           if ('name' in field && field.name === 'confirmationMessage') {
@@ -84,6 +101,8 @@ export const plugins: Plugin[] = [
     collections: ['posts'],
     beforeSync: beforeSyncWithSearch,
     searchOverrides: {
+      labels: { singular: 'Resultado de búsqueda', plural: 'Índice de búsqueda' },
+      admin: { group: 'Administración', hidden: visiblePara('admin') },
       fields: ({ defaultFields }) => {
         return [...defaultFields, ...searchFields]
       },

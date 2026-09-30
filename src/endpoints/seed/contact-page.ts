@@ -1,6 +1,8 @@
 import type { Form } from '@/payload-types'
 import { RequiredDataFromCollectionSlug } from 'payload'
 
+import { lexical } from './salud/lexical'
+
 type ContactArgs = {
   contactForm: Form
 }
@@ -9,48 +11,30 @@ export const contact: (args: ContactArgs) => RequiredDataFromCollectionSlug<'pag
   contactForm,
 }) => {
   return {
-    slug: 'contact',
+    slug: 'contacto',
     _status: 'published',
+    title: 'Contacto',
     hero: {
-      type: 'none',
+      type: 'lowImpact',
+      richText: lexical([
+        { tipo: 'h1', texto: 'Contacto' },
+        {
+          tipo: 'p',
+          texto:
+            'Para consultas administrativas, de obras sociales o sugerencias. Para pedir un turno usá la sección Turnos.',
+        },
+      ]),
     },
     layout: [
       {
         blockType: 'formBlock',
-        enableIntro: true,
+        enableIntro: false,
         form: contactForm,
-        introContent: {
-          root: {
-            type: 'root',
-            children: [
-              {
-                type: 'heading',
-                children: [
-                  {
-                    type: 'text',
-                    detail: 0,
-                    format: 0,
-                    mode: 'normal',
-                    style: '',
-                    text: 'Example contact form:',
-                    version: 1,
-                  },
-                ],
-                direction: 'ltr',
-                format: '',
-                indent: 0,
-                tag: 'h3',
-                version: 1,
-              },
-            ],
-            direction: 'ltr',
-            format: '',
-            indent: 0,
-            version: 1,
-          },
-        },
       },
     ],
-    title: 'Contact',
+    meta: {
+      description: 'Escribinos por consultas administrativas, obras sociales o sugerencias.',
+      title: 'Contacto',
+    },
   }
 }

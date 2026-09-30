@@ -7,9 +7,9 @@ import './index.scss'
 
 const SuccessMessage: React.FC = () => (
   <div>
-    Database seeded! You can now{' '}
+    ¡Datos de ejemplo cargados! Ya podés{' '}
     <a target="_blank" href="/">
-      visit your website
+      ver el sitio
     </a>
   </div>
 )
@@ -24,15 +24,15 @@ export const SeedButton: React.FC = () => {
       e.preventDefault()
 
       if (seeded) {
-        toast.info('Database already seeded.')
+        toast.info('Los datos de ejemplo ya se cargaron.')
         return
       }
       if (loading) {
-        toast.info('Seeding already in progress.')
+        toast.info('La carga ya está en curso.')
         return
       }
       if (error) {
-        toast.error(`An error occurred, please refresh and try again.`)
+        toast.error('Hubo un error. Recargá la página y probá de nuevo.')
         return
       }
 
@@ -48,7 +48,7 @@ export const SeedButton: React.FC = () => {
                     resolve(true)
                     setSeeded(true)
                   } else {
-                    reject('An error occurred while seeding.')
+                    reject('No se pudieron cargar los datos de ejemplo.')
                   }
                 })
                 .catch((error) => {
@@ -59,9 +59,9 @@ export const SeedButton: React.FC = () => {
             }
           }),
           {
-            loading: 'Seeding with data....',
+            loading: 'Cargando datos de ejemplo…',
             success: <SuccessMessage />,
-            error: 'An error occurred while seeding.',
+            error: 'No se pudieron cargar los datos de ejemplo.',
           },
         )
       } catch (err) {
@@ -73,14 +73,14 @@ export const SeedButton: React.FC = () => {
   )
 
   let message = ''
-  if (loading) message = ' (seeding...)'
-  if (seeded) message = ' (done!)'
+  if (loading) message = ' (cargando…)'
+  if (seeded) message = ' (¡listo!)'
   if (error) message = ` (error: ${error})`
 
   return (
     <Fragment>
       <button className="seedButton" onClick={handleClick}>
-        Seed your database
+        Cargar datos de ejemplo
       </button>
       {message}
     </Fragment>

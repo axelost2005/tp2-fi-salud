@@ -1,11 +1,17 @@
-import { test, expect, Page } from '@playwright/test'
-import { login } from '../helpers/login'
-import { seedTestUser, cleanupTestUser, testUser } from '../helpers/seedUser'
+import { expect, test, type Page } from '@playwright/test'
 
-test.describe('Admin Panel', () => {
+import { login } from '../helpers/login'
+import { cleanupTestUser, seedTestUser, testUser } from '../helpers/seedUser'
+
+/**
+ * Pruebas de punta a punta del panel de administración (Payload) en español.
+ * Requisito: servidor en http://localhost:3000.
+ */
+
+test.describe('Panel de administración', () => {
   let page: Page
 
-  test.beforeAll(async ({ browser }, testInfo) => {
+  test.beforeAll(async ({ browser }) => {
     await seedTestUser()
 
     const context = await browser.newContext()
@@ -18,24 +24,20 @@ test.describe('Admin Panel', () => {
     await cleanupTestUser()
   })
 
-  test('can navigate to dashboard', async () => {
+  test('muestra la bienvenida y el tablero de turnos', async () => {
     await page.goto('http://localhost:3000/admin')
-    await expect(page).toHaveURL('http://localhost:3000/admin')
-    const dashboardArtifact = page.locator('span[title="Dashboard"]').first()
-    await expect(dashboardArtifact).toBeVisible()
+    await expect(page.getByText('Este es el panel de Confluencia Salud')).toBeVisible()
+    await expect(page.getByRole('heading', { name: 'Turnos de hoy' })).toBeVisible()
   })
 
-  test('can navigate to list view', async () => {
-    await page.goto('http://localhost:3000/admin/collections/users')
-    await expect(page).toHaveURL('http://localhost:3000/admin/collections/users')
-    const listViewArtifact = page.locator('h1', { hasText: 'Users' }).first()
-    await expect(listViewArtifact).toBeVisible()
+  test('abre el listado de turnos', async () => {
+    await page.goto('http://localhost:3000/admin/collections/turnos')
+    await expect(page.locator('h1', { hasText: 'Turnos' }).first()).toBeVisible()
   })
 
-  test('can navigate to edit view', async () => {
+  test('abre el formulario para crear una página', async () => {
     await page.goto('http://localhost:3000/admin/collections/pages/create')
     await expect(page).toHaveURL(/\/admin\/collections\/pages\/[a-zA-Z0-9-_]+/)
-    const editViewArtifact = page.locator('input[name="title"]')
-    await expect(editViewArtifact).toBeVisible()
+    await expect(page.locator('input[name="title"]')).toBeVisible()
   })
 })

@@ -23,17 +23,17 @@ export const Search: React.FC = () => {
         }}
       >
         <Label htmlFor="search" className="sr-only">
-          Search
+          Buscar en el sitio
         </Label>
         <Input
           id="search"
           onChange={(event) => {
             setValue(event.target.value)
           }}
-          placeholder="Search"
+          placeholder="Buscá una especialidad, un tema o una novedad"
         />
         <button type="submit" className="sr-only">
-          submit
+          Buscar
         </button>
       </form>
     </div>
