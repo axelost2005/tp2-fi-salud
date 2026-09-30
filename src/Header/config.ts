@@ -1,13 +1,18 @@
 import type { GlobalConfig } from 'payload'
 
+import { gestionaContenidos } from '@/access/roles'
 import { link } from '@/fields/link'
 import { revalidateHeader } from './hooks/revalidateHeader'
 
 export const Header: GlobalConfig = {
   slug: 'header',
   label: 'Encabezado',
+  admin: {
+    group: 'Configuración del sitio',
+  },
   access: {
     read: () => true,
+    update: gestionaContenidos,
   },
   fields: [
     {

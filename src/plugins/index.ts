@@ -13,6 +13,8 @@ import { beforeSyncWithSearch } from '@/search/beforeSync'
 import { Page, Post } from '@/payload-types'
 import { getServerSideURL } from '@/utilities/getURL'
 import { sitio } from '@/config/sitio'
+import { esAdmin, gestionaContenidos, gestionaTurnos } from '@/access/roles'
+import { anyone } from '@/access/anyone'
 
 const generateTitle: GenerateTitle<Post | Page> = ({ doc }) => {
   return doc?.title ? `${doc.title} | ${sitio.nombre}` : sitio.nombre
@@ -29,6 +31,8 @@ export const plugins: Plugin[] = [
     collections: ['pages', 'posts'],
     overrides: {
       labels: { singular: 'Redirección', plural: 'Redirecciones' },
+      admin: { group: 'Administración' },
+      access: { create: esAdmin, delete: esAdmin, read: anyone, update: esAdmin },
       // @ts-expect-error - This is a valid override, mapped fields don't resolve to the same type
       fields: ({ defaultFields }) => {
         return defaultFields.map((field) => {
@@ -62,9 +66,14 @@ export const plugins: Plugin[] = [
     },
     formSubmissionOverrides: {
       labels: { singular: 'Envío de formulario', plural: 'Envíos de formularios' },
+      admin: { group: 'Formularios' },
+      // Cualquiera puede enviar un formulario, pero solo recepción y admins leen los mensajes
+      access: { create: anyone, delete: esAdmin, read: gestionaTurnos, update: gestionaTurnos },
     },
     formOverrides: {
       labels: { singular: 'Formulario', plural: 'Formularios' },
+      admin: { group: 'Formularios' },
+      access: { create: gestionaContenidos, delete: gestionaContenidos, read: anyone, update: gestionaContenidos },
       fields: ({ defaultFields }) => {
         return defaultFields.map((field) => {
           if ('name' in field && field.name === 'confirmationMessage') {
@@ -91,6 +100,7 @@ export const plugins: Plugin[] = [
     beforeSync: beforeSyncWithSearch,
     searchOverrides: {
       labels: { singular: 'Resultado de búsqueda', plural: 'Índice de búsqueda' },
+      admin: { group: 'Administración' },
       fields: ({ defaultFields }) => {
         return [...defaultFields, ...searchFields]
       },

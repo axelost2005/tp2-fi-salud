@@ -1,6 +1,6 @@
 import type { GlobalConfig } from 'payload'
 
-import { authenticated } from '@/access/authenticated'
+import { gestionaContenidos } from '@/access/roles'
 
 import { revalidateInstitucion } from './hooks/revalidateInstitucion'
 
@@ -15,10 +15,11 @@ export const Institucion: GlobalConfig = {
   label: 'Datos institucionales',
   admin: {
     description: 'Teléfonos, dirección y horarios que se muestran en todo el sitio.',
+    group: 'Configuración del sitio',
   },
   access: {
     read: () => true,
-    update: authenticated,
+    update: gestionaContenidos,
   },
   fields: [
     {
