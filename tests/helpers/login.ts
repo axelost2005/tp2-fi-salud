@@ -26,6 +26,6 @@ export async function login({
 
   await page.waitForURL(`${serverURL}/admin`)
 
-  const dashboardArtifact = page.locator('span[title="Dashboard"]')
-  await expect(dashboardArtifact).toBeVisible()
+  // Panel en español: se verifica con el saludo de la bienvenida
+  await expect(page.getByText('Este es el panel de')).toBeVisible()
 }
