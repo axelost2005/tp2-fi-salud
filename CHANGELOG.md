@@ -7,6 +7,7 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/). C
 ### Agregado
 - Documentación: README, registro de decisiones, cambios respecto del template, pruebas ejecutadas y capturas antes/después.
 - Pruebas automáticas: 17 unitarias, 9 de integración y 7 de punta a punta.
+- Informe en PDF (17 páginas) con su generador, y tablero de tareas.
 
 ## [0.6.0] · Panel por rol
 ### Cambiado
