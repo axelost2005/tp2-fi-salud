@@ -11,6 +11,7 @@ import RichText from '@/components/RichText'
 import type { Post } from '@/payload-types'
 
 import { PostHero } from '@/heros/PostHero'
+import { AvisoMedico, RevisionProfesional } from '@/components/Novedades'
 import { generateMeta } from '@/utilities/generateMeta'
 import PageClient from './page.client'
 import { LivePreviewListener } from '@/components/LivePreviewListener'
@@ -46,13 +47,13 @@ export default async function Post({ params: paramsPromise }: Args) {
   const { slug = '' } = await paramsPromise
   // Decode to support slugs with special characters
   const decodedSlug = decodeURIComponent(slug)
-  const url = '/posts/' + decodedSlug
+  const url = '/novedades/' + decodedSlug
   const post = await queryPostBySlug({ slug: decodedSlug })
 
   if (!post) return <PayloadRedirects url={url} />
 
   return (
-    <article className="pt-16 pb-16">
+    <article className="pt-6 pb-16">
       <PageClient />
 
       {/* Allows redirects for valid pages too */}
@@ -62,16 +63,23 @@ export default async function Post({ params: paramsPromise }: Args) {
 
       <PostHero post={post} />
 
-      <div className="flex flex-col items-center gap-4 pt-8">
-        <div className="container">
-          <RichText className="max-w-[48rem] mx-auto" data={post.content} enableGutter={false} />
-          {post.relatedPosts && post.relatedPosts.length > 0 && (
-            <RelatedPosts
-              className="mt-12 max-w-[52rem] lg:grid lg:grid-cols-subgrid col-start-1 col-span-3 grid-rows-[2fr]"
-              docs={post.relatedPosts.filter((post) => typeof post === 'object')}
-            />
+      <div className="container pt-10">
+        <div className="mx-auto flex max-w-[48rem] flex-col gap-8">
+          <RichText className="mx-0" data={post.content} enableGutter={false} />
+          {post.revisadoPor && typeof post.revisadoPor === 'object' && (
+            <RevisionProfesional profesional={post.revisadoPor} />
           )}
+          {post.mostrarAviso !== false && <AvisoMedico />}
         </div>
+
+        {post.relatedPosts && post.relatedPosts.length > 0 && (
+          <section aria-labelledby="titulo-relacionadas" className="mx-auto mt-16 max-w-[64rem]">
+            <h2 className="mb-6 text-2xl font-bold" id="titulo-relacionadas">
+              También te puede interesar
+            </h2>
+            <RelatedPosts docs={post.relatedPosts.filter((post) => typeof post === 'object')} />
+          </section>
+        )}
       </div>
     </article>
   )

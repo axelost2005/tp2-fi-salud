@@ -1,8 +1,10 @@
 import type { Metadata } from 'next/types'
 
 import { CollectionArchive } from '@/components/CollectionArchive'
+import { EncabezadoSeccion } from '@/components/EncabezadoSeccion'
 import { PageRange } from '@/components/PageRange'
 import { Pagination } from '@/components/Pagination'
+import { sitio } from '@/config/sitio'
 import configPromise from '@payload-config'
 import { getPayload } from 'payload'
 import React from 'react'
@@ -10,6 +12,8 @@ import PageClient from './page.client'
 import { notFound } from 'next/navigation'
 
 export const revalidate = 600
+
+const POR_PAGINA = 12
 
 type Args = {
   params: Promise<{
@@ -28,25 +32,22 @@ export default async function Page({ params: paramsPromise }: Args) {
   const posts = await payload.find({
     collection: 'posts',
     depth: 1,
-    limit: 12,
+    limit: POR_PAGINA,
     page: sanitizedPageNumber,
     overrideAccess: false,
+    sort: '-publishedAt',
   })
 
   return (
-    <div className="pt-24 pb-24">
+    <div className="pb-24">
       <PageClient />
-      <div className="container mb-16">
-        <div className="prose dark:prose-invert max-w-none">
-          <h1>Posts</h1>
-        </div>
-      </div>
+      <EncabezadoSeccion titulo={`Novedades de salud, página ${sanitizedPageNumber}`} />
 
-      <div className="container mb-8">
+      <div className="container mb-8 text-muted-foreground">
         <PageRange
           collection="posts"
           currentPage={posts.page}
-          limit={12}
+          limit={POR_PAGINA}
           totalDocs={posts.totalDocs}
         />
       </div>
@@ -65,7 +66,7 @@ export default async function Page({ params: paramsPromise }: Args) {
 export async function generateMetadata({ params: paramsPromise }: Args): Promise<Metadata> {
   const { pageNumber } = await paramsPromise
   return {
-    title: `Payload Website Template Posts Page ${pageNumber || ''}`,
+    title: `Novedades, página ${pageNumber || ''} | ${sitio.nombre}`,
   }
 }
 
@@ -76,7 +77,8 @@ export async function generateStaticParams() {
     overrideAccess: false,
   })
 
-  const totalPages = Math.ceil(totalDocs / 10)
+  // El template calculaba las páginas con 10 por página aunque mostraba 12
+  const totalPages = Math.ceil(totalDocs / POR_PAGINA)
 
   const pages: { pageNumber: string }[] = []
 
