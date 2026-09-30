@@ -48,6 +48,7 @@ export const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
     }
 
     document.documentElement.setAttribute('data-theme', themeToSet)
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- sincroniza con localStorage/matchMedia (sistema externo) al montar
     setThemeState(themeToSet)
   }, [])
 
