@@ -20,7 +20,7 @@ const collections: CollectionSlug[] = [
   'search',
 ]
 
-const globals: GlobalSlug[] = ['header', 'footer']
+const globals: Extract<GlobalSlug, 'header' | 'footer'>[] = ['header', 'footer']
 
 const categories = ['Technology', 'News', 'Finance', 'Design', 'Software', 'Engineering']
 
@@ -225,14 +225,14 @@ export const seed = async ({
           {
             link: {
               type: 'custom',
-              label: 'Posts',
+              label: 'Novedades',
               url: '/posts',
             },
           },
           {
             link: {
               type: 'reference',
-              label: 'Contact',
+              label: 'Contacto',
               reference: {
                 relationTo: 'pages',
                 value: contactPage.id,
@@ -240,6 +240,17 @@ export const seed = async ({
             },
           },
         ],
+        botonDestacado: {
+          mostrar: true,
+          link: {
+            type: 'reference',
+            label: 'Pedir turno',
+            reference: {
+              relationTo: 'pages',
+              value: contactPage.id,
+            },
+          },
+        },
       },
     }),
     payload.updateGlobal({
