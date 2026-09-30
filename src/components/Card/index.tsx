@@ -1,3 +1,4 @@
+import { Clock3 } from 'lucide-react'
 import Link from 'next/link'
 import React from 'react'
 
@@ -6,8 +7,10 @@ import type { Post } from '@/payload-types'
 import { cn } from '@/utilities/ui'
 import { Media } from '@/components/Media'
 import { MarcaConfluencia } from '@/components/Logo/MarcaConfluencia'
+import { hrefDocumento } from '@/utilities/rutas'
 
-export type CardPostData = Pick<Post, 'slug' | 'categories' | 'meta' | 'title'>
+export type CardPostData = Pick<Post, 'slug' | 'categories' | 'meta' | 'title'> &
+  Partial<Pick<Post, 'tiempoLectura'>>
 
 /**
  * Tarjeta de novedad. Cambios respecto del template:
@@ -28,13 +31,13 @@ export const Card: React.FC<{
 }> = (props) => {
   const { className, doc, relationTo, showCategories, title: titleFromProps } = props
 
-  const { slug, categories, meta, title } = doc || {}
+  const { slug, categories, meta, tiempoLectura, title } = doc || {}
   const { description, image: metaImage } = meta || {}
 
   const hasCategories = categories && Array.isArray(categories) && categories.length > 0
   const titleToUse = titleFromProps || title
   const sanitizedDescription = description?.replace(/\s/g, ' ') // replace non-breaking space with white space
-  const href = `/${relationTo}/${slug}`
+  const href = hrefDocumento(relationTo || 'posts', slug)
 
   return (
     <article
@@ -82,6 +85,12 @@ export const Card: React.FC<{
           </h3>
         )}
         {description && <p className="text-muted-foreground">{sanitizedDescription}</p>}
+        {tiempoLectura ? (
+          <p className="mt-auto flex items-center gap-1.5 pt-1 text-sm text-muted-foreground">
+            <Clock3 aria-hidden className="size-4" />
+            {tiempoLectura} min de lectura
+          </p>
+        ) : null}
       </div>
     </article>
   )

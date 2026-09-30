@@ -13,6 +13,7 @@ import { beforeSyncWithSearch } from '@/search/beforeSync'
 import { Page, Post } from '@/payload-types'
 import { getServerSideURL } from '@/utilities/getURL'
 import { sitio } from '@/config/sitio'
+import { hrefDocumento } from '@/utilities/rutas'
 import { esAdmin, gestionaContenidos, gestionaTurnos } from '@/access/roles'
 import { anyone } from '@/access/anyone'
 
@@ -20,10 +21,11 @@ const generateTitle: GenerateTitle<Post | Page> = ({ doc }) => {
   return doc?.title ? `${doc.title} | ${sitio.nombre}` : sitio.nombre
 }
 
-const generateURL: GenerateURL<Post | Page> = ({ doc }) => {
+const generateURL: GenerateURL<Post | Page> = ({ collectionConfig, doc }) => {
   const url = getServerSideURL()
+  const coleccion = collectionConfig?.slug === 'posts' ? 'posts' : 'pages'
 
-  return doc?.slug ? `${url}/${doc.slug}` : url
+  return doc?.slug ? `${url}${hrefDocumento(coleccion, doc.slug)}` : url
 }
 
 export const plugins: Plugin[] = [

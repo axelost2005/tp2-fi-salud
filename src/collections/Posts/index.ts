@@ -15,6 +15,7 @@ import { Banner } from '../../blocks/Banner/config'
 import { Code } from '../../blocks/Code/config'
 import { MediaBlock } from '../../blocks/MediaBlock/config'
 import { generatePreviewPath } from '../../utilities/generatePreviewPath'
+import { calcularTiempoLectura } from './hooks/calcularTiempoLectura'
 import { populateAuthors } from './hooks/populateAuthors'
 import { revalidateDelete, revalidatePost } from './hooks/revalidatePost'
 
@@ -28,8 +29,18 @@ import {
 import { slugField } from 'payload'
 import { slugifyPayload } from '../../utilities/slugify'
 
+/**
+ * Módulo modificado: Novedades de salud (la colección "posts" del template).
+ * Cambios: nombres en español, URL /novedades, campo "Revisado por" que
+ * vincula cada nota con un profesional de la cartilla, tiempo de lectura
+ * automático y aviso médico opcional al pie.
+ */
 export const Posts: CollectionConfig<'posts'> = {
   slug: 'posts',
+  labels: {
+    singular: 'Novedad',
+    plural: 'Novedades',
+  },
   access: {
     create: gestionaContenidos,
     delete: gestionaContenidos,
@@ -43,6 +54,7 @@ export const Posts: CollectionConfig<'posts'> = {
     title: true,
     slug: true,
     categories: true,
+    tiempoLectura: true,
     meta: {
       image: true,
       description: true,
@@ -50,7 +62,8 @@ export const Posts: CollectionConfig<'posts'> = {
   },
   admin: {
     group: 'Contenidos',
-    defaultColumns: ['title', 'slug', 'updatedAt'],
+    defaultColumns: ['title', 'categories', 'revisadoPor', 'updatedAt'],
+    description: 'Artículos de prevención y cuidado de la salud. Cada nota puede indicar qué profesional la revisó.',
     livePreview: {
       url: ({ data, req }) =>
         generatePreviewPath({
@@ -71,6 +84,7 @@ export const Posts: CollectionConfig<'posts'> = {
     {
       name: 'title',
       type: 'text',
+      label: 'Título',
       required: true,
     },
     {
@@ -81,6 +95,7 @@ export const Posts: CollectionConfig<'posts'> = {
             {
               name: 'heroImage',
               type: 'upload',
+              label: 'Imagen principal',
               relationTo: 'media',
             },
             {
@@ -102,13 +117,14 @@ export const Posts: CollectionConfig<'posts'> = {
               required: true,
             },
           ],
-          label: 'Content',
+          label: 'Contenido',
         },
         {
           fields: [
             {
               name: 'relatedPosts',
               type: 'relationship',
+              label: 'Novedades relacionadas',
               admin: {
                 position: 'sidebar',
               },
@@ -125,6 +141,7 @@ export const Posts: CollectionConfig<'posts'> = {
             {
               name: 'categories',
               type: 'relationship',
+              label: 'Categorías',
               admin: {
                 position: 'sidebar',
               },
@@ -132,7 +149,7 @@ export const Posts: CollectionConfig<'posts'> = {
               relationTo: 'categories',
             },
           ],
-          label: 'Meta',
+          label: 'Relacionados',
         },
         {
           name: 'meta',
@@ -166,6 +183,7 @@ export const Posts: CollectionConfig<'posts'> = {
     {
       name: 'publishedAt',
       type: 'date',
+      label: 'Fecha de publicación',
       admin: {
         date: {
           pickerAppearance: 'dayAndTime',
@@ -186,11 +204,44 @@ export const Posts: CollectionConfig<'posts'> = {
     {
       name: 'authors',
       type: 'relationship',
+      label: 'Autores',
       admin: {
         position: 'sidebar',
       },
       hasMany: true,
       relationTo: 'users',
+    },
+    {
+      name: 'revisadoPor',
+      type: 'relationship',
+      label: 'Revisado por',
+      relationTo: 'profesionales',
+      admin: {
+        description: 'Profesional de la cartilla que validó el contenido médico.',
+        position: 'sidebar',
+      },
+    },
+    {
+      name: 'tiempoLectura',
+      type: 'number',
+      label: 'Tiempo de lectura (min)',
+      admin: {
+        description: 'Se calcula solo al guardar.',
+        position: 'sidebar',
+        readOnly: true,
+      },
+      hooks: {
+        beforeChange: [calcularTiempoLectura],
+      },
+    },
+    {
+      name: 'mostrarAviso',
+      type: 'checkbox',
+      label: 'Mostrar aviso "no reemplaza la consulta"',
+      defaultValue: true,
+      admin: {
+        position: 'sidebar',
+      },
     },
     // This field is only used to populate the user data via the `populateAuthors` hook
     // This is because the `user` collection has access control locked to protect user privacy

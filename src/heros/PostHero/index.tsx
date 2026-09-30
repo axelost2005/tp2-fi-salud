@@ -14,7 +14,7 @@ import { formatAuthors } from '@/utilities/formatAuthors'
 export const PostHero: React.FC<{
   post: Post
 }> = ({ post }) => {
-  const { categories, heroImage, populatedAuthors, publishedAt, title } = post
+  const { categories, heroImage, populatedAuthors, publishedAt, tiempoLectura, title } = post
 
   const hasAuthors =
     populatedAuthors && populatedAuthors.length > 0 && formatAuthors(populatedAuthors) !== ''
@@ -58,6 +58,12 @@ export const PostHero: React.FC<{
               </dd>
             </div>
           )}
+          {tiempoLectura ? (
+            <div>
+              <dt className="text-sm">Lectura</dt>
+              <dd className="font-semibold text-foreground">{tiempoLectura} min</dd>
+            </div>
+          ) : null}
         </dl>
       </div>
 

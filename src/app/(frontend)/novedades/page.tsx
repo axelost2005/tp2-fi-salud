@@ -1,8 +1,10 @@
 import type { Metadata } from 'next/types'
 
 import { CollectionArchive } from '@/components/CollectionArchive'
+import { EncabezadoSeccion } from '@/components/EncabezadoSeccion'
 import { PageRange } from '@/components/PageRange'
 import { Pagination } from '@/components/Pagination'
+import { sitio } from '@/config/sitio'
 import configPromise from '@payload-config'
 import { getPayload } from 'payload'
 import React from 'react'
@@ -24,19 +26,20 @@ export default async function Page() {
       slug: true,
       categories: true,
       meta: true,
+      tiempoLectura: true,
     },
+    sort: '-publishedAt',
   })
 
   return (
-    <div className="pt-24 pb-24">
+    <div className="pb-24">
       <PageClient />
-      <div className="container mb-16">
-        <div className="prose dark:prose-invert max-w-none">
-          <h1>Posts</h1>
-        </div>
-      </div>
+      <EncabezadoSeccion
+        descripcion="Consejos de prevención y cuidado de la salud, revisados por profesionales de nuestra cartilla."
+        titulo="Novedades de salud"
+      />
 
-      <div className="container mb-8">
+      <div className="container mb-8 text-muted-foreground">
         <PageRange
           collection="posts"
           currentPage={posts.page}
@@ -58,6 +61,7 @@ export default async function Page() {
 
 export function generateMetadata(): Metadata {
   return {
-    title: `Payload Website Template Posts`,
+    description: 'Consejos de prevención y cuidado de la salud revisados por profesionales.',
+    title: `Novedades de salud | ${sitio.nombre}`,
   }
 }
