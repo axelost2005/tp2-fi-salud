@@ -196,7 +196,9 @@ export async function solicitarTurno(
       const errores: Partial<Record<CampoSolicitud, string>> = {}
       for (const e of error.data.errors) {
         const campo = (e.path === 'profesional' || e.path === 'fecha' ? e.path : 'hora') as CampoSolicitud
-        errores[campo] ??= e.message
+        // claveAgenda: la base rechazó el turno porque alguien reservó ese horario un instante antes
+        const mensaje = e.path === 'claveAgenda' ? 'Ese horario se acaba de reservar. Elegí otro.' : e.message
+        errores[campo] ??= mensaje
       }
       return { errores, mensaje: 'No pudimos reservar ese horario.', ok: false, valores }
     }

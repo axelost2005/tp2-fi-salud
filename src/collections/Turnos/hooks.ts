@@ -26,6 +26,21 @@ export const normalizarFecha: FieldHook = ({ value }) =>
 export const asignarCodigo: FieldHook = ({ operation, value }) =>
   operation === 'create' || !value ? generarCodigoTurno() : value
 
+/**
+ * Clave única de agenda: "profesional|fecha|hora" para los turnos vigentes y
+ * vacía para los cancelados. El campo tiene índice único en la base, así que
+ * si dos personas envían el mismo horario al mismo tiempo, la base de datos
+ * acepta solo uno aunque ambos pasen el control del hook (condición de carrera).
+ * Postgres permite muchos valores vacíos (NULL), por eso un horario cancelado
+ * se puede volver a reservar.
+ */
+export const calcularClaveAgenda: FieldHook = ({ data, originalDoc }) => {
+  const t = { ...originalDoc, ...data } as Partial<Turno>
+  const profesional = idDe(t.profesional as Relacion)
+  if (t.estado === 'cancelado' || !profesional || !t.fecha || !t.hora) return null
+  return `${profesional}|${aFechaCorta(t.fecha)}|${t.hora}`
+}
+
 /** Texto que identifica el turno en el panel: "05/10 08:20 — Pérez, Juan". */
 export const armarResumen: FieldHook = ({ data, originalDoc }) => {
   const t = { ...originalDoc, ...data } as Partial<Turno>

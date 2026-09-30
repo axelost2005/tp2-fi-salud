@@ -16,6 +16,9 @@ export const revalidatePost: CollectionAfterChangeHook<Post> = ({
       payload.logger.info(`Revalidating post at path: ${path}`)
 
       revalidatePath(path)
+      // El inicio y el listado muestran las últimas novedades (el template no los actualizaba)
+      revalidatePath('/')
+      revalidatePath('/novedades')
       revalidateTag('posts-sitemap', 'max')
     }
 
