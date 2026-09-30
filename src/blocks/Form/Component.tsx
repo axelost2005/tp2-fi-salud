@@ -82,7 +82,7 @@ export const FormBlock: React.FC<
             setIsLoading(false)
 
             setError({
-              message: res.errors?.[0]?.message || 'Internal Server Error',
+              message: res.errors?.[0]?.message || 'No pudimos enviar el formulario.',
               status: res.status,
             })
 
@@ -103,7 +103,7 @@ export const FormBlock: React.FC<
           console.warn(err)
           setIsLoading(false)
           setError({
-            message: 'Something went wrong.',
+            message: 'No pudimos enviar el formulario. Revisá tu conexión y probá de nuevo.',
           })
         }
       }
@@ -123,8 +123,8 @@ export const FormBlock: React.FC<
           {!isLoading && hasSubmitted && confirmationType === 'message' && (
             <RichText data={confirmationMessage} />
           )}
-          {isLoading && !hasSubmitted && <p>Loading, please wait...</p>}
-          {error && <div>{`${error.status || '500'}: ${error.message || ''}`}</div>}
+          {isLoading && !hasSubmitted && <p>Enviando…</p>}
+          {error && <p className="mb-4 font-semibold text-destructive" role="alert">{error.message}</p>}
           {!hasSubmitted && (
             <form id={formID} onSubmit={handleSubmit(onSubmit)}>
               <div className="mb-4 last:mb-0">
