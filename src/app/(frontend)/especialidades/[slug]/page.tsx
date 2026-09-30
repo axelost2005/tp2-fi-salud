@@ -9,6 +9,7 @@ import React, { cache } from 'react'
 import { IconoEspecialidad } from '@/components/Cartilla/IconoEspecialidad'
 import { TarjetaProfesional } from '@/components/Cartilla/TarjetaProfesional'
 import RichText from '@/components/RichText'
+import { Button } from '@/components/ui/button'
 import { sitio } from '@/config/sitio'
 
 export const revalidate = 600
@@ -84,6 +85,11 @@ export default async function PaginaEspecialidad({ params }: Args) {
               {especialidad.nombre}
             </h1>
             <p className="mt-3 text-lg text-muted-foreground">{especialidad.resumen}</p>
+            <Button asChild className="mt-6" size="lg">
+              <Link href={`/turnos?especialidad=${especialidad.slug}`}>
+                Pedir turno de {especialidad.nombre.toLowerCase()}
+              </Link>
+            </Button>
           </div>
         </div>
       </header>
@@ -105,7 +111,17 @@ export default async function PaginaEspecialidad({ params }: Args) {
         ) : (
           <div className="grid gap-4 lg:grid-cols-2">
             {profesionales.docs.map((p) => (
-              <TarjetaProfesional key={p.id} profesional={p} />
+              <TarjetaProfesional
+                acciones={
+                  <Button asChild size="sm" variant="outline">
+                    <Link href={`/turnos?especialidad=${especialidad.slug}&profesional=${p.id}`}>
+                      Pedir turno
+                    </Link>
+                  </Button>
+                }
+                key={p.id}
+                profesional={p}
+              />
             ))}
           </div>
         )}

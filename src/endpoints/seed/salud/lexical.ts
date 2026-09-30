@@ -26,7 +26,7 @@ const nodoTexto = (text: string, negrita = false): NodoTexto => ({
 
 export type Bloque =
   | { tipo: 'p'; texto: string }
-  | { tipo: 'h2' | 'h3'; texto: string }
+  | { tipo: 'h1' | 'h2' | 'h3'; texto: string }
   | { tipo: 'lista'; items: string[] }
 
 const convertir = (b: Bloque) => {

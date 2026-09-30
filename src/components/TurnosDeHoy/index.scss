@@ -1,0 +1,89 @@
+// Tablero "Turnos de hoy" del panel. Usa las variables de tema de Payload,
+// así se ve bien en modo claro y oscuro.
+.turnos-de-hoy {
+  margin-bottom: calc(var(--base) * 1.5);
+  padding: calc(var(--base) * 1);
+  border: 1px solid var(--theme-elevation-150);
+  border-radius: var(--style-radius-m);
+  background: var(--theme-elevation-50);
+
+  h2 {
+    margin: 0;
+  }
+
+  &__encabezado {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: calc(var(--base) * 0.5);
+    margin-bottom: calc(var(--base) * 0.75);
+  }
+
+  &__fecha {
+    color: var(--theme-elevation-600);
+    &::first-letter {
+      text-transform: uppercase;
+    }
+  }
+
+  &__indicadores {
+    display: flex;
+    flex-wrap: wrap;
+    gap: calc(var(--base) * 0.5);
+    margin-bottom: calc(var(--base) * 0.75);
+
+    a {
+      padding: calc(var(--base) * 0.4) calc(var(--base) * 0.75);
+      border: 1px solid var(--theme-elevation-200);
+      border-radius: 999px;
+      background: var(--theme-elevation-0);
+      color: var(--theme-text);
+      text-decoration: none;
+
+      &:hover {
+        border-color: var(--rio);
+      }
+    }
+  }
+
+  &__tabla {
+    width: 100%;
+    border-collapse: collapse;
+
+    th,
+    td {
+      padding: calc(var(--base) * 0.4) calc(var(--base) * 0.5);
+      border-bottom: 1px solid var(--theme-elevation-150);
+      text-align: left;
+    }
+
+    th {
+      color: var(--theme-elevation-600);
+      font-weight: 600;
+    }
+  }
+
+  &__estado {
+    display: inline-block;
+    padding: 0.1rem 0.6rem;
+    border-radius: 999px;
+    background: var(--theme-elevation-100);
+    font-size: 0.85rem;
+    font-weight: 600;
+
+    &--pendiente {
+      background: #f6e3bf;
+      color: #5c3d0b;
+    }
+
+    &--confirmado {
+      background: #cfe9df;
+      color: #0b4a44;
+    }
+
+    &--atendido {
+      background: var(--theme-elevation-150);
+    }
+  }
+}

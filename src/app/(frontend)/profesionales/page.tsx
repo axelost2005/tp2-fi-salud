@@ -128,9 +128,22 @@ export default async function PaginaProfesionales({ searchParams }: Args) {
         </div>
 
         <div className="grid gap-4 lg:grid-cols-2">
-          {profesionales.docs.map((p) => (
-            <TarjetaProfesional key={p.id} profesional={p} />
-          ))}
+          {profesionales.docs.map((p) => {
+            // Si se filtró por especialidad se usa esa; si no, la primera del profesional
+            const primera = (p.especialidades || []).find((e) => typeof e === 'object')
+            const slug = especialidadElegida?.slug ?? (typeof primera === 'object' ? primera.slug : '')
+            return (
+              <TarjetaProfesional
+                acciones={
+                  <Button asChild size="sm" variant="outline">
+                    <Link href={`/turnos?especialidad=${slug}&profesional=${p.id}`}>Pedir turno</Link>
+                  </Button>
+                }
+                key={p.id}
+                profesional={p}
+              />
+            )
+          })}
         </div>
       </div>
     </div>

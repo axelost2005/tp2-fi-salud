@@ -45,6 +45,26 @@ export const gestionaTurnos: Access = segunRoles('admin', 'recepcion')
 export const esAdminCampo: FieldAccess = ({ req }: { req: ConUsuario }) =>
   tieneRol(req?.user as User | null, 'admin')
 
+/** Campo editable solo por admin y recepción (por ejemplo, los datos del paciente de un turno). */
+export const gestionaTurnosCampo: FieldAccess = ({ req }: { req: ConUsuario }) =>
+  tieneRol(req?.user as User | null, 'admin', 'recepcion')
+
+/**
+ * Turnos: admin y recepción ven todos; un profesional solo los de su agenda
+ * (la condición se agrega a la consulta, así nunca llegan datos de otros
+ * pacientes). Los datos de salud son sensibles según la Ley 25.326.
+ */
+export const accesoTurnos: Access = ({ req }) => {
+  const user = req.user as User | null
+  if (!user) return false
+  if (tieneRol(user, 'admin', 'recepcion')) return true
+  if (tieneRol(user, 'profesional') && user.profesional) {
+    const id = typeof user.profesional === 'object' ? user.profesional.id : user.profesional
+    return { profesional: { equals: id } }
+  }
+  return false
+}
+
 /** Un usuario puede verse y editarse a sí mismo; un admin, a todos. */
 export const adminOElMismo: Access = ({ req }) => {
   const user = req.user as User | null

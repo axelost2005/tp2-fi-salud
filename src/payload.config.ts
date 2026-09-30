@@ -11,6 +11,7 @@ import { Media } from './collections/Media'
 import { Pages } from './collections/Pages'
 import { Posts } from './collections/Posts'
 import { Profesionales } from './collections/Profesionales'
+import { Turnos } from './collections/Turnos'
 import { Users } from './collections/Users'
 import { Footer } from './Footer/config'
 import { Header } from './Header/config'
@@ -29,7 +30,7 @@ export default buildConfig({
       // Mensaje en la pantalla de ingreso al panel
       beforeLogin: ['@/components/BeforeLogin'],
       // Bienvenida en el inicio del panel
-      beforeDashboard: ['@/components/BeforeDashboard'],
+      beforeDashboard: ['@/components/BeforeDashboard', '@/components/TurnosDeHoy'],
       // Logo e ícono propios en lugar de los de Payload
       graphics: {
         Icon: '@/components/AdminGraphics#IconoAdmin',
@@ -40,6 +41,10 @@ export default buildConfig({
       icons: [{ rel: 'icon', type: 'image/svg+xml', url: '/favicon.svg' }],
       titleSuffix: ` — ${sitio.nombre}`,
     },
+    // Sin Gravatar: no se envía el hash del email del personal a un servicio externo
+    avatar: 'default',
+    // Fechas del panel en formato argentino
+    dateFormat: 'dd/MM/yyyy HH:mm',
     importMap: {
       baseDir: path.resolve(dirname),
     },
@@ -74,7 +79,7 @@ export default buildConfig({
       connectionString: process.env.DATABASE_URL || '',
     },
   }),
-  collections: [Pages, Posts, Media, Categories, Especialidades, Profesionales, Users],
+  collections: [Pages, Posts, Media, Categories, Especialidades, Profesionales, Turnos, Users],
   cors: [getServerSideURL()].filter(Boolean),
   globals: [Header, Footer, Institucion],
   // Panel de administración en español

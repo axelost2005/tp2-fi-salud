@@ -68,6 +68,23 @@ export const Users: CollectionConfig = {
         beforeChange: [primerUsuarioEsAdmin],
       },
     },
+    {
+      // Agregado por el módulo de turnos
+      name: 'profesional',
+      type: 'relationship',
+      label: 'Ficha en la cartilla',
+      relationTo: 'profesionales',
+      saveToJWT: true,
+      access: {
+        create: esAdminCampo,
+        update: esAdminCampo,
+      },
+      admin: {
+        condition: (data) => Array.isArray(data?.roles) && data.roles.includes('profesional'),
+        description: 'Para el rol Profesional: vincula la cuenta con su ficha y así solo ve su propia agenda.',
+        position: 'sidebar',
+      },
+    },
   ],
   timestamps: true,
 }

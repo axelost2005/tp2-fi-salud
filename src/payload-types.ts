@@ -73,6 +73,7 @@ export interface Config {
     categories: Category;
     especialidades: Especialidad;
     profesionales: Profesional;
+    turnos: Turno;
     users: User;
     redirects: Redirect;
     forms: Form;
@@ -97,6 +98,7 @@ export interface Config {
     categories: CategoriesSelect<false> | CategoriesSelect<true>;
     especialidades: EspecialidadesSelect<false> | EspecialidadesSelect<true>;
     profesionales: ProfesionalesSelect<false> | ProfesionalesSelect<true>;
+    turnos: TurnosSelect<false> | TurnosSelect<true>;
     users: UsersSelect<false> | UsersSelect<true>;
     redirects: RedirectsSelect<false> | RedirectsSelect<true>;
     forms: FormsSelect<false> | FormsSelect<true>;
@@ -444,6 +446,10 @@ export interface User {
    * Definen qué puede ver y hacer cada persona en el panel.
    */
   roles: ('admin' | 'editor' | 'recepcion' | 'profesional')[];
+  /**
+   * Para el rol Profesional: vincula la cuenta con su ficha y así solo ve su propia agenda.
+   */
+  profesional?: (number | null) | Profesional;
   updatedAt: string;
   createdAt: string;
   email: string;
@@ -961,6 +967,47 @@ export interface EspecialidadesDestacadasBlock {
   blockType: 'especialidadesDestacadas';
 }
 /**
+ * Agenda de turnos. Los pedidos del sitio entran como "Pendiente de confirmación".
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "turnos".
+ */
+export interface Turno {
+  id: number;
+  especialidad: number | Especialidad;
+  profesional: number | Profesional;
+  fecha: string;
+  /**
+   * Formato 24 h (ej.: 08:20). Tiene que ser un horario de la agenda del profesional.
+   */
+  hora: string;
+  paciente: {
+    nombre: string;
+    apellido: string;
+    dni: string;
+    telefono: string;
+    email: string;
+    obraSocial: 'particular' | 'issn' | 'pami' | 'osde' | 'swiss-medical' | 'galeno' | 'sancor-salud' | 'osecac';
+  };
+  motivo?: string | null;
+  /**
+   * Solo las ve el personal. Nunca se muestran al paciente.
+   */
+  notasInternas?: string | null;
+  estado: 'pendiente' | 'confirmado' | 'cancelado' | 'atendido';
+  /**
+   * Se genera solo. Es el código que recibe el paciente.
+   */
+  codigo?: string | null;
+  creadoDesde?: ('web' | 'panel') | null;
+  /**
+   * Se arma solo con la fecha, la hora y el paciente.
+   */
+  resumen?: string | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "redirects".
  */
@@ -1173,6 +1220,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'profesionales';
         value: number | Profesional;
+      } | null)
+    | ({
+        relationTo: 'turnos';
+        value: number | Turno;
       } | null)
     | ({
         relationTo: 'users';
@@ -1579,11 +1630,40 @@ export interface ProfesionalesSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "turnos_select".
+ */
+export interface TurnosSelect<T extends boolean = true> {
+  especialidad?: T;
+  profesional?: T;
+  fecha?: T;
+  hora?: T;
+  paciente?:
+    | T
+    | {
+        nombre?: T;
+        apellido?: T;
+        dni?: T;
+        telefono?: T;
+        email?: T;
+        obraSocial?: T;
+      };
+  motivo?: T;
+  notasInternas?: T;
+  estado?: T;
+  codigo?: T;
+  creadoDesde?: T;
+  resumen?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "users_select".
  */
 export interface UsersSelect<T extends boolean = true> {
   name?: T;
   roles?: T;
+  profesional?: T;
   updatedAt?: T;
   createdAt?: T;
   email?: T;
