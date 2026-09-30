@@ -6,7 +6,7 @@ import type {
   TextFieldSingleValidation,
 } from 'payload'
 
-import { gestionaContenidos } from '../../access/roles'
+import { gestionaContenidos, visiblePara } from '../../access/roles'
 import { DIAS, HORAS, OBRAS_SOCIALES } from '../../utilities/cartilla'
 import { revalidarCartilla, revalidarCartillaAlBorrar } from '../hooks/revalidarCartilla'
 
@@ -69,6 +69,7 @@ export const Profesionales: CollectionConfig<'profesionales'> = {
     defaultColumns: ['nombreCompleto', 'matricula', 'especialidades', 'activo'],
     description: 'Cartilla de profesionales. Solo los marcados como visibles aparecen en el sitio.',
     group: 'Cartilla',
+    hidden: visiblePara('admin', 'editor', 'recepcion'),
     listSearchableFields: ['nombre', 'apellido', 'matricula'],
     useAsTitle: 'nombreCompleto',
   },

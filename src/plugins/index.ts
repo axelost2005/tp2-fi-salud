@@ -14,7 +14,7 @@ import { Page, Post } from '@/payload-types'
 import { getServerSideURL } from '@/utilities/getURL'
 import { sitio } from '@/config/sitio'
 import { hrefDocumento } from '@/utilities/rutas'
-import { esAdmin, gestionaContenidos, gestionaTurnos } from '@/access/roles'
+import { esAdmin, gestionaContenidos, gestionaTurnos, visiblePara } from '@/access/roles'
 import { anyone } from '@/access/anyone'
 
 const generateTitle: GenerateTitle<Post | Page> = ({ doc }) => {
@@ -33,7 +33,7 @@ export const plugins: Plugin[] = [
     collections: ['pages', 'posts'],
     overrides: {
       labels: { singular: 'Redirección', plural: 'Redirecciones' },
-      admin: { group: 'Administración' },
+      admin: { group: 'Administración', hidden: visiblePara('admin') },
       access: { create: esAdmin, delete: esAdmin, read: anyone, update: esAdmin },
       // @ts-expect-error - This is a valid override, mapped fields don't resolve to the same type
       fields: ({ defaultFields }) => {
@@ -74,7 +74,7 @@ export const plugins: Plugin[] = [
     },
     formOverrides: {
       labels: { singular: 'Formulario', plural: 'Formularios' },
-      admin: { group: 'Formularios' },
+      admin: { group: 'Formularios', hidden: visiblePara('admin', 'editor') },
       access: { create: gestionaContenidos, delete: gestionaContenidos, read: anyone, update: gestionaContenidos },
       fields: ({ defaultFields }) => {
         return defaultFields.map((field) => {
@@ -102,7 +102,7 @@ export const plugins: Plugin[] = [
     beforeSync: beforeSyncWithSearch,
     searchOverrides: {
       labels: { singular: 'Resultado de búsqueda', plural: 'Índice de búsqueda' },
-      admin: { group: 'Administración' },
+      admin: { group: 'Administración', hidden: visiblePara('admin') },
       fields: ({ defaultFields }) => {
         return [...defaultFields, ...searchFields]
       },

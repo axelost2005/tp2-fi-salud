@@ -3,7 +3,7 @@ import type { CollectionConfig } from 'payload'
 import { slugField } from 'payload'
 
 import { anyone } from '../../access/anyone'
-import { gestionaContenidos } from '../../access/roles'
+import { gestionaContenidos, visiblePara } from '../../access/roles'
 import { ICONOS_ESPECIALIDAD } from '../../utilities/cartilla'
 import { slugifyPayload } from '../../utilities/slugify'
 import { revalidarCartilla, revalidarCartillaAlBorrar } from '../hooks/revalidarCartilla'
@@ -33,6 +33,7 @@ export const Especialidades: CollectionConfig<'especialidades'> = {
     description:
       'Áreas de atención. Se muestran en el sitio y se usan para filtrar la cartilla y pedir turnos.',
     group: 'Cartilla',
+    hidden: visiblePara('admin', 'editor', 'recepcion'),
     useAsTitle: 'nombre',
   },
   defaultSort: 'orden',

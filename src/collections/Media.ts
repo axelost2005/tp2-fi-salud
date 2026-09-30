@@ -9,7 +9,7 @@ import path from 'path'
 import { fileURLToPath } from 'url'
 
 import { anyone } from '../access/anyone'
-import { gestionaContenidos } from '../access/roles'
+import { gestionaContenidos, visiblePara } from '../access/roles'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -23,6 +23,7 @@ export const Media: CollectionConfig = {
   folders: true,
   admin: {
     group: 'Contenidos',
+    hidden: visiblePara('admin', 'editor'),
   },
   access: {
     create: gestionaContenidos,

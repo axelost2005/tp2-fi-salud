@@ -7,9 +7,11 @@ import {
   HorizontalRuleFeature,
   InlineToolbarFeature,
   lexicalEditor,
+  OrderedListFeature,
+  UnorderedListFeature,
 } from '@payloadcms/richtext-lexical'
 
-import { gestionaContenidos } from '../../access/roles'
+import { gestionaContenidos, visiblePara } from '../../access/roles'
 import { authenticatedOrPublished } from '../../access/authenticatedOrPublished'
 import { Banner } from '../../blocks/Banner/config'
 import { Code } from '../../blocks/Code/config'
@@ -62,6 +64,7 @@ export const Posts: CollectionConfig<'posts'> = {
   },
   admin: {
     group: 'Contenidos',
+    hidden: visiblePara('admin', 'editor'),
     defaultColumns: ['title', 'categories', 'revisadoPor', 'updatedAt'],
     description: 'Artículos de prevención y cuidado de la salud. Cada nota puede indicar qué profesional la revisó.',
     livePreview: {
@@ -110,6 +113,8 @@ export const Posts: CollectionConfig<'posts'> = {
                     FixedToolbarFeature(),
                     InlineToolbarFeature(),
                     HorizontalRuleFeature(),
+                    UnorderedListFeature(),
+                    OrderedListFeature(),
                   ]
                 },
               }),
@@ -186,6 +191,7 @@ export const Posts: CollectionConfig<'posts'> = {
       label: 'Fecha de publicación',
       admin: {
         date: {
+          displayFormat: 'dd/MM/yyyy HH:mm',
           pickerAppearance: 'dayAndTime',
         },
         position: 'sidebar',

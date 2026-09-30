@@ -1,6 +1,6 @@
 import type { CollectionConfig } from 'payload'
 
-import { gestionaContenidos } from '../../access/roles'
+import { gestionaContenidos, visiblePara } from '../../access/roles'
 import { authenticatedOrPublished } from '../../access/authenticatedOrPublished'
 import { Archive } from '../../blocks/ArchiveBlock/config'
 import { CallToAction } from '../../blocks/CallToAction/config'
@@ -44,6 +44,7 @@ export const Pages: CollectionConfig<'pages'> = {
   },
   admin: {
     group: 'Contenidos',
+    hidden: visiblePara('admin', 'editor'),
     defaultColumns: ['title', 'slug', 'updatedAt'],
     livePreview: {
       url: ({ data, req }) =>
@@ -124,6 +125,7 @@ export const Pages: CollectionConfig<'pages'> = {
       type: 'date',
       label: 'Fecha de publicación',
       admin: {
+        date: { displayFormat: 'dd/MM/yyyy' },
         position: 'sidebar',
       },
     },
