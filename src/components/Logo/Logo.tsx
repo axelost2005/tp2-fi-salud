@@ -1,29 +1,28 @@
 import clsx from 'clsx'
 import React from 'react'
 
+import { sitio } from '@/config/sitio'
+
+import { MarcaConfluencia } from './MarcaConfluencia'
+
 interface Props {
   className?: string
-  loading?: 'lazy' | 'eager'
-  priority?: 'auto' | 'high' | 'low'
 }
 
-export const Logo = (props: Props) => {
-  const { loading: loadingFromProps, priority: priorityFromProps, className } = props
-
-  const loading = loadingFromProps || 'lazy'
-  const priority = priorityFromProps || 'low'
+/**
+ * Isologotipo: isotipo SVG + nombre en texto real (no imagen), así se lee
+ * bien con lectores de pantalla y hereda el color del contexto (claro/oscuro).
+ */
+export const Logo = ({ className }: Props) => {
+  const [primera, ...resto] = sitio.nombre.split(' ')
 
   return (
-    /* eslint-disable @next/next/no-img-element */
-    <img
-      alt="Payload Logo"
-      width={193}
-      height={34}
-      loading={loading}
-      fetchPriority={priority}
-      decoding="async"
-      className={clsx('max-w-[9.375rem] w-full h-[34px]', className)}
-      src="https://raw.githubusercontent.com/payloadcms/payload/3.x/packages/ui/src/assets/payload-logo-light.svg"
-    />
+    <span className={clsx('inline-flex items-center gap-2.5 text-current', className)}>
+      <MarcaConfluencia className="h-9 w-9 shrink-0" />
+      <span className="text-[1.3rem] leading-none tracking-[-0.01em]">
+        <span className="font-bold">{primera}</span>
+        {resto.length > 0 && <span className="font-normal"> {resto.join(' ')}</span>}
+      </span>
+    </span>
   )
 }

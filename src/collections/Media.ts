@@ -16,6 +16,10 @@ const dirname = path.dirname(filename)
 
 export const Media: CollectionConfig = {
   slug: 'media',
+  labels: {
+    singular: 'Archivo',
+    plural: 'Biblioteca de medios',
+  },
   folders: true,
   access: {
     create: authenticated,
@@ -27,11 +31,18 @@ export const Media: CollectionConfig = {
     {
       name: 'alt',
       type: 'text',
-      //required: true,
+      label: 'Texto alternativo',
+      admin: {
+        description:
+          'Describí la imagen para quienes usan lector de pantalla (ej.: "Médica tomando la presión a un paciente").',
+      },
+      // Obligatorio: sin texto alternativo la imagen es invisible para un lector de pantalla
+      required: true,
     },
     {
       name: 'caption',
       type: 'richText',
+      label: 'Epígrafe',
       editor: lexicalEditor({
         features: ({ rootFeatures }) => {
           return [...rootFeatures, FixedToolbarFeature(), InlineToolbarFeature()]

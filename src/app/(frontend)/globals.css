@@ -44,7 +44,8 @@
   --breakpoint-xl: 80rem;
   --breakpoint-2xl: 86rem;
   --font-mono: var(--font-geist-mono);
-  --font-sans: var(--font-geist-sans);
+  /* Atkinson Hyperlegible Next (ver app/(frontend)/fonts.ts) */
+  --font-sans: var(--font-atkinson), ui-sans-serif, system-ui, sans-serif;
 }
 
 @layer utilities {
@@ -86,81 +87,103 @@
   }
 }
 
+/*
+ * Paleta "Confluencia" (reemplaza la paleta gris del template).
+ * - Río (primario): turquesa del río Limay. Botones y enlaces.
+ * - Barda (acento): arena de las bardas y del río Neuquén. Solo decorativo
+ *   (logo e ilustración), nunca para texto.
+ * - Urgencia: rojo reservado para la guardia y los errores.
+ * - Tinta / Niebla: texto y fondos suaves, con un matiz verde en vez de gris puro.
+ * Todos los pares de texto cumplen contraste WCAG AA (≥ 4.5:1).
+ */
 :root {
-  --background: oklch(100% 0 0deg);
-  --foreground: oklch(14.5% 0 0deg);
-  --card: oklch(96.5% 0.005 265deg);
-  --card-foreground: oklch(14.5% 0 0deg);
-  --popover: oklch(100% 0 0deg);
-  --popover-foreground: oklch(14.5% 0 0deg);
-  --primary: oklch(20.5% 0 0deg);
-  --primary-foreground: oklch(98.5% 0 0deg);
-  --secondary: oklch(97% 0 0deg);
-  --secondary-foreground: oklch(20.5% 0 0deg);
-  --muted: oklch(97% 0 0deg);
-  --muted-foreground: oklch(55.6% 0 0deg);
-  --accent: oklch(97% 0 0deg);
-  --accent-foreground: oklch(20.5% 0 0deg);
-  --destructive: oklch(57.7% 0.245 27.325deg);
-  --destructive-foreground: oklch(57.7% 0.245 27.325deg);
-  --border: oklch(92.2% 0 0deg);
-  --input: oklch(92.2% 0 0deg);
-  --ring: oklch(70.8% 0 0deg);
-  --chart-1: oklch(64.6% 0.222 41.116deg);
-  --chart-2: oklch(60% 0.118 184.704deg);
-  --chart-3: oklch(39.8% 0.07 227.392deg);
-  --chart-4: oklch(82.8% 0.189 84.429deg);
-  --chart-5: oklch(76.9% 0.188 70.08deg);
-  --radius: 0.625rem;
-  --sidebar: oklch(98.5% 0 0deg);
-  --sidebar-foreground: oklch(14.5% 0 0deg);
-  --sidebar-primary: oklch(20.5% 0 0deg);
-  --sidebar-primary-foreground: oklch(98.5% 0 0deg);
-  --sidebar-accent: oklch(97% 0 0deg);
-  --sidebar-accent-foreground: oklch(20.5% 0 0deg);
-  --sidebar-border: oklch(92.2% 0 0deg);
-  --sidebar-ring: oklch(70.8% 0 0deg);
-  --success: oklch(78% 0.08 200deg);
-  --warning: oklch(89% 0.1 75deg);
-  --error: oklch(75% 0.15 25deg);
+  --rio: #0d6b62;
+  --barda: #c98f45;
+  --urgencia: #b42318;
+
+  --background: #ffffff;
+  --foreground: #152a2b;
+  --card: #f2f6f5;
+  --card-foreground: #152a2b;
+  --popover: #ffffff;
+  --popover-foreground: #152a2b;
+  --primary: var(--rio);
+  --primary-foreground: #ffffff;
+  --secondary: #e2f0ed;
+  --secondary-foreground: #0b4a44;
+  --muted: #f2f6f5;
+  --muted-foreground: #4f6664;
+  --accent: #e2f0ed;
+  --accent-foreground: #0b4a44;
+  --destructive: var(--urgencia);
+  --destructive-foreground: var(--urgencia);
+  --border: #d6e2df;
+  --input: #b9ccc8;
+  --ring: var(--rio);
+  --chart-1: #0d6b62;
+  --chart-2: #c98f45;
+  --chart-3: #3f7fa6;
+  --chart-4: #7a9e5a;
+  --chart-5: #a35d6a;
+  --radius: 0.75rem;
+  --sidebar: #f2f6f5;
+  --sidebar-foreground: #152a2b;
+  --sidebar-primary: var(--rio);
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-accent: #e2f0ed;
+  --sidebar-accent-foreground: #0b4a44;
+  --sidebar-border: #d6e2df;
+  --sidebar-ring: var(--rio);
+  --success: #cfe9df;
+  --warning: #f6e3bf;
+  --error: #f6d4cf;
+
+  /* Pie de página: siempre oscuro, en tinta verdosa */
+  --pie: #10292a;
+  --pie-foreground: #e6f0ee;
+  --pie-muted: #a9c4bf;
+  --pie-urgencia: #ff9c8f;
+  --pie-borde: #24403f;
 }
 
 [data-theme='dark'] {
-  --background: oklch(14.5% 0 0deg);
-  --foreground: oklch(98.5% 0 0deg);
-  --card: oklch(17% 0 0deg);
-  --card-foreground: oklch(98.5% 0 0deg);
-  --popover: oklch(14.5% 0 0deg);
-  --popover-foreground: oklch(98.5% 0 0deg);
-  --primary: oklch(98.5% 0 0deg);
-  --primary-foreground: oklch(20.5% 0 0deg);
-  --secondary: oklch(26.9% 0 0deg);
-  --secondary-foreground: oklch(98.5% 0 0deg);
-  --muted: oklch(26.9% 0 0deg);
-  --muted-foreground: oklch(70.8% 0 0deg);
-  --accent: oklch(26.9% 0 0deg);
-  --accent-foreground: oklch(98.5% 0 0deg);
-  --destructive: oklch(39.6% 0.141 25.723deg);
-  --destructive-foreground: oklch(63.7% 0.237 25.331deg);
-  --border: oklch(26.9% 0 0deg);
-  --input: oklch(26.9% 0 0deg);
-  --ring: oklch(43.9% 0 0deg);
-  --chart-1: oklch(48.8% 0.243 264.376deg);
-  --chart-2: oklch(69.6% 0.17 162.48deg);
-  --chart-3: oklch(76.9% 0.188 70.08deg);
-  --chart-4: oklch(62.7% 0.265 303.9deg);
-  --chart-5: oklch(64.5% 0.246 16.439deg);
-  --sidebar: oklch(20.5% 0 0deg);
-  --sidebar-foreground: oklch(98.5% 0 0deg);
-  --sidebar-primary: oklch(48.8% 0.243 264.376deg);
-  --sidebar-primary-foreground: oklch(98.5% 0 0deg);
-  --sidebar-accent: oklch(26.9% 0 0deg);
-  --sidebar-accent-foreground: oklch(98.5% 0 0deg);
-  --sidebar-border: oklch(26.9% 0 0deg);
-  --sidebar-ring: oklch(43.9% 0 0deg);
-  --success: oklch(28% 0.1 200deg);
-  --warning: oklch(35% 0.08 70deg);
-  --error: oklch(45% 0.1 25deg);
+  --rio: #5ec4b6;
+  --barda: #deaa62;
+  --urgencia: #ff8a7a;
+
+  --background: #0c1a1b;
+  --foreground: #e6f0ee;
+  --card: #132628;
+  --card-foreground: #e6f0ee;
+  --popover: #0c1a1b;
+  --popover-foreground: #e6f0ee;
+  --primary: var(--rio);
+  --primary-foreground: #062320;
+  --secondary: #173a38;
+  --secondary-foreground: #cdebe6;
+  --muted: #132628;
+  --muted-foreground: #9fb8b4;
+  --accent: #173a38;
+  --accent-foreground: #cdebe6;
+  --destructive: var(--urgencia);
+  --destructive-foreground: var(--urgencia);
+  --border: #243d3f;
+  --input: #35565a;
+  --ring: var(--rio);
+  --sidebar: #132628;
+  --sidebar-foreground: #e6f0ee;
+  --sidebar-primary: var(--rio);
+  --sidebar-primary-foreground: #062320;
+  --sidebar-accent: #173a38;
+  --sidebar-accent-foreground: #cdebe6;
+  --sidebar-border: #243d3f;
+  --sidebar-ring: var(--rio);
+  --success: #173a2f;
+  --warning: #3d3219;
+  --error: #45211d;
+
+  --pie: #081314;
+  --pie-borde: #1d3334;
 }
 
 @theme inline {
@@ -203,6 +226,14 @@
   --color-success: var(--success);
   --color-warning: var(--warning);
   --color-error: var(--error);
+  --color-rio: var(--rio);
+  --color-barda: var(--barda);
+  --color-urgencia: var(--urgencia);
+  --color-pie: var(--pie);
+  --color-pie-foreground: var(--pie-foreground);
+  --color-pie-muted: var(--pie-muted);
+  --color-pie-urgencia: var(--pie-urgencia);
+  --color-pie-borde: var(--pie-borde);
 }
 
 @layer base {
@@ -211,6 +242,51 @@
   }
   body {
     @apply bg-background text-foreground min-h-[100vh] flex flex-col;
+    /* 17 px y 1.6 de interlineado: lectura cómoda para personas mayores */
+    font-size: 1.0625rem;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+  /* Foco siempre visible para quien navega con teclado */
+  :focus-visible {
+    outline: 3px solid var(--ring);
+    outline-offset: 2px;
+  }
+  ::selection {
+    background: var(--secondary);
+    color: var(--secondary-foreground);
+  }
+}
+
+/* Dentro del pie (fondo oscuro) el isotipo usa los tonos claros de los ríos */
+.pie-oscuro {
+  --rio: #5ec4b6;
+  --barda: #deaa62;
+}
+
+/* Título principal del hero "Confluencia" */
+.hero-confluencia h1 {
+  font-size: clamp(2.25rem, 1.6rem + 2.6vw, 3.4rem);
+  font-weight: 700;
+  line-height: 1.08;
+  letter-spacing: -0.02em;
+}
+
+/* Única animación del sitio: los ríos se dibujan una vez al cargar */
+@media (prefers-reduced-motion: no-preference) {
+  .rio-trazo {
+    stroke-dasharray: 1;
+    stroke-dashoffset: 1;
+    animation: rio-dibujar 1.6s cubic-bezier(0.33, 0, 0.2, 1) forwards;
+  }
+  .rio-trazo--limay {
+    animation-delay: 0.2s;
+  }
+}
+
+@keyframes rio-dibujar {
+  to {
+    stroke-dashoffset: 0;
   }
 }
 

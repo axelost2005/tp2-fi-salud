@@ -30,21 +30,22 @@ export const ThemeSelector: React.FC = () => {
 
   React.useEffect(() => {
     const preference = window.localStorage.getItem(themeLocalStorageKey)
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- sincroniza con localStorage (sistema externo) al montar
     setValue(preference ?? 'auto')
   }, [])
 
   return (
     <Select onValueChange={onThemeChange} value={value}>
       <SelectTrigger
-        aria-label="Select a theme"
-        className="w-auto bg-transparent gap-2 pl-0 md:pl-3 border-none"
+        aria-label="Elegir tema de color"
+        className="w-auto gap-2 border-none bg-transparent pl-0 text-inherit md:pl-3 [&_svg]:opacity-80"
       >
-        <SelectValue placeholder="Theme" />
+        <SelectValue placeholder="Tema" />
       </SelectTrigger>
       <SelectContent>
-        <SelectItem value="auto">Auto</SelectItem>
-        <SelectItem value="light">Light</SelectItem>
-        <SelectItem value="dark">Dark</SelectItem>
+        <SelectItem value="auto">Automático</SelectItem>
+        <SelectItem value="light">Claro</SelectItem>
+        <SelectItem value="dark">Oscuro</SelectItem>
       </SelectContent>
     </Select>
   )

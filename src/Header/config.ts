@@ -5,6 +5,7 @@ import { revalidateHeader } from './hooks/revalidateHeader'
 
 export const Header: GlobalConfig = {
   slug: 'header',
+  label: 'Encabezado',
   access: {
     read: () => true,
   },
@@ -12,6 +13,8 @@ export const Header: GlobalConfig = {
     {
       name: 'navItems',
       type: 'array',
+      label: 'Menú principal',
+      labels: { singular: 'Enlace', plural: 'Enlaces' },
       fields: [
         link({
           appearances: false,
@@ -24,6 +27,30 @@ export const Header: GlobalConfig = {
           RowLabel: '@/Header/RowLabel#RowLabel',
         },
       },
+    },
+    {
+      name: 'botonDestacado',
+      type: 'group',
+      label: 'Botón destacado',
+      admin: {
+        description: 'Acción principal que se ve siempre en el encabezado (por ejemplo, "Pedir turno").',
+      },
+      fields: [
+        {
+          name: 'mostrar',
+          type: 'checkbox',
+          label: 'Mostrar el botón',
+          defaultValue: false,
+        },
+        link({
+          appearances: false,
+          overrides: {
+            admin: {
+              condition: (_, siblingData) => Boolean(siblingData?.mostrar),
+            },
+          },
+        }),
+      ],
     },
   ],
   hooks: {

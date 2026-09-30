@@ -112,10 +112,12 @@ export interface Config {
   globals: {
     header: Header;
     footer: Footer;
+    institucion: Institucion;
   };
   globalsSelect: {
     header: HeaderSelect<false> | HeaderSelect<true>;
     footer: FooterSelect<false> | FooterSelect<true>;
+    institucion: InstitucionSelect<false> | InstitucionSelect<true>;
   };
   locale: null;
   widgets: {
@@ -159,7 +161,7 @@ export interface Page {
   id: number;
   title: string;
   hero: {
-    type: 'none' | 'highImpact' | 'mediumImpact' | 'lowImpact';
+    type: 'none' | 'confluencia' | 'highImpact' | 'mediumImpact' | 'lowImpact';
     richText?: {
       root: {
         type: string;
@@ -192,7 +194,7 @@ export interface Page {
             url?: string | null;
             label: string;
             /**
-             * Choose how the link should be rendered.
+             * Cómo se ve el enlace.
              */
             appearance?: ('default' | 'outline') | null;
           };
@@ -276,7 +278,10 @@ export interface Post {
  */
 export interface Media {
   id: number;
-  alt?: string | null;
+  /**
+   * Describí la imagen para quienes usan lector de pantalla (ej.: "Médica tomando la presión a un paciente").
+   */
+  alt: string;
   caption?: {
     root: {
       type: string;
@@ -477,7 +482,7 @@ export interface CallToActionBlock {
           url?: string | null;
           label: string;
           /**
-           * Choose how the link should be rendered.
+           * Cómo se ve el enlace.
            */
           appearance?: ('default' | 'outline') | null;
         };
@@ -527,7 +532,7 @@ export interface ContentBlock {
           url?: string | null;
           label: string;
           /**
-           * Choose how the link should be rendered.
+           * Cómo se ve el enlace.
            */
           appearance?: ('default' | 'outline') | null;
         };
@@ -780,7 +785,7 @@ export interface Form {
 export interface Redirect {
   id: number;
   /**
-   * You will need to rebuild the website when changing this field.
+   * Al cambiar este campo hay que volver a compilar el sitio.
    */
   from: string;
   to?: {
@@ -1650,6 +1655,27 @@ export interface Header {
         id?: string | null;
       }[]
     | null;
+  /**
+   * Acción principal que se ve siempre en el encabezado (por ejemplo, "Pedir turno").
+   */
+  botonDestacado?: {
+    mostrar?: boolean | null;
+    link?: {
+      type?: ('reference' | 'custom') | null;
+      newTab?: boolean | null;
+      reference?:
+        | ({
+            relationTo: 'pages';
+            value: number | Page;
+          } | null)
+        | ({
+            relationTo: 'posts';
+            value: number | Post;
+          } | null);
+      url?: string | null;
+      label: string;
+    };
+  };
   updatedAt?: string | null;
   createdAt?: string | null;
 }
@@ -1683,6 +1709,27 @@ export interface Footer {
   createdAt?: string | null;
 }
 /**
+ * Teléfonos, dirección y horarios que se muestran en todo el sitio.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "institucion".
+ */
+export interface Institucion {
+  id: number;
+  lema?: string | null;
+  telefonoGuardia: string;
+  telefonoTurnos?: string | null;
+  email?: string | null;
+  direccion?: string | null;
+  horario?: string | null;
+  /**
+   * Se muestra en la página de turnos para aclarar que no es un canal de urgencias.
+   */
+  avisoUrgencias?: string | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "header_select".
  */
@@ -1700,6 +1747,20 @@ export interface HeaderSelect<T extends boolean = true> {
               label?: T;
             };
         id?: T;
+      };
+  botonDestacado?:
+    | T
+    | {
+        mostrar?: T;
+        link?:
+          | T
+          | {
+              type?: T;
+              newTab?: T;
+              reference?: T;
+              url?: T;
+              label?: T;
+            };
       };
   updatedAt?: T;
   createdAt?: T;
@@ -1724,6 +1785,22 @@ export interface FooterSelect<T extends boolean = true> {
             };
         id?: T;
       };
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "institucion_select".
+ */
+export interface InstitucionSelect<T extends boolean = true> {
+  lema?: T;
+  telefonoGuardia?: T;
+  telefonoTurnos?: T;
+  email?: T;
+  direccion?: T;
+  horario?: T;
+  avisoUrgencias?: T;
   updatedAt?: T;
   createdAt?: T;
   globalType?: T;

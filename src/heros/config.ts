@@ -17,22 +17,26 @@ export const hero: Field = {
       name: 'type',
       type: 'select',
       defaultValue: 'lowImpact',
-      label: 'Type',
+      label: 'Tipo de portada',
       options: [
         {
-          label: 'None',
+          label: 'Sin portada',
           value: 'none',
         },
         {
-          label: 'High Impact',
+          label: 'Confluencia (texto + ilustración de marca)',
+          value: 'confluencia',
+        },
+        {
+          label: 'Alto impacto (foto de fondo)',
           value: 'highImpact',
         },
         {
-          label: 'Medium Impact',
+          label: 'Impacto medio (texto + foto)',
           value: 'mediumImpact',
         },
         {
-          label: 'Low Impact',
+          label: 'Bajo impacto (solo texto)',
           value: 'lowImpact',
         },
       ],
@@ -55,12 +59,14 @@ export const hero: Field = {
     },
     linkGroup({
       overrides: {
+        label: 'Botones',
         maxRows: 2,
       },
     }),
     {
       name: 'media',
       type: 'upload',
+      label: 'Imagen',
       admin: {
         condition: (_, { type } = {}) => ['highImpact', 'mediumImpact'].includes(type),
       },
