@@ -1,6 +1,6 @@
 import type { GlobalConfig } from 'payload'
 
-import { gestionaContenidos } from '@/access/roles'
+import { gestionaContenidos, visiblePara } from '@/access/roles'
 import { link } from '@/fields/link'
 import { revalidateHeader } from './hooks/revalidateHeader'
 
@@ -9,6 +9,7 @@ export const Header: GlobalConfig = {
   label: 'Encabezado',
   admin: {
     group: 'Configuración del sitio',
+    hidden: visiblePara('admin', 'editor'),
   },
   access: {
     read: () => true,

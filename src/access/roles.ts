@@ -65,6 +65,16 @@ export const accesoTurnos: Access = ({ req }) => {
   return false
 }
 
+/**
+ * Para `admin.hidden`: oculta una sección del menú del panel salvo para los
+ * roles indicados. Solo afecta la interfaz; los permisos reales siguen
+ * estando en `access`.
+ */
+export const visiblePara =
+  (...roles: Rol[]) =>
+  ({ user }: { user: unknown }): boolean =>
+    !tieneRol(user as User | null, ...roles)
+
 /** Un usuario puede verse y editarse a sí mismo; un admin, a todos. */
 export const adminOElMismo: Access = ({ req }) => {
   const user = req.user as User | null

@@ -54,10 +54,11 @@ const TurnosDeHoy = async ({ payload, user }: { payload: Payload; user?: TypedUs
 
       <div className={`${baseClass}__indicadores`}>
         <Link href="/admin/collections/turnos?where[estado][equals]=pendiente">
-          <strong>{pendientes.totalDocs}</strong> pendientes de confirmar
+          <strong>{pendientes.totalDocs}</strong>{' '}
+          {pendientes.totalDocs === 1 ? 'pendiente de confirmar' : 'pendientes de confirmar'}
         </Link>
         <Link href="/admin/collections/turnos">
-          <strong>{deHoy.totalDocs}</strong> turnos para hoy
+          <strong>{deHoy.totalDocs}</strong> {deHoy.totalDocs === 1 ? 'turno para hoy' : 'turnos para hoy'}
         </Link>
       </div>
 

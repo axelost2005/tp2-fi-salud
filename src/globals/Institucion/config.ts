@@ -1,6 +1,6 @@
 import type { GlobalConfig } from 'payload'
 
-import { gestionaContenidos } from '@/access/roles'
+import { gestionaContenidos, visiblePara } from '@/access/roles'
 
 import { revalidateInstitucion } from './hooks/revalidateInstitucion'
 
@@ -16,6 +16,7 @@ export const Institucion: GlobalConfig = {
   admin: {
     description: 'Teléfonos, dirección y horarios que se muestran en todo el sitio.',
     group: 'Configuración del sitio',
+    hidden: visiblePara('admin', 'editor'),
   },
   access: {
     read: () => true,
