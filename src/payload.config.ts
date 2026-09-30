@@ -6,9 +6,11 @@ import { fileURLToPath } from 'url'
 import { es } from '@payloadcms/translations/languages/es'
 
 import { Categories } from './collections/Categories'
+import { Especialidades } from './collections/Especialidades'
 import { Media } from './collections/Media'
 import { Pages } from './collections/Pages'
 import { Posts } from './collections/Posts'
+import { Profesionales } from './collections/Profesionales'
 import { Users } from './collections/Users'
 import { Footer } from './Footer/config'
 import { Header } from './Header/config'
@@ -72,7 +74,7 @@ export default buildConfig({
       connectionString: process.env.DATABASE_URL || '',
     },
   }),
-  collections: [Pages, Posts, Media, Categories, Users],
+  collections: [Pages, Posts, Media, Categories, Especialidades, Profesionales, Users],
   cors: [getServerSideURL()].filter(Boolean),
   globals: [Header, Footer, Institucion],
   // Panel de administración en español
