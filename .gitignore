@@ -23,3 +23,7 @@ node_modules/
 
 # TypeScript incremental
 tsconfig.tsbuildinfo
+
+# Archivos temporales del generador del informe
+docs/informe/_render.html
+docs/informe/_tmp.pdf
