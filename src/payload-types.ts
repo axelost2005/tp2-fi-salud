@@ -1000,6 +1000,7 @@ export interface Turno {
    */
   codigo?: string | null;
   creadoDesde?: ('web' | 'panel') | null;
+  claveAgenda?: string | null;
   /**
    * Se arma solo con la fecha, la hora y el paciente.
    */
@@ -1652,6 +1653,7 @@ export interface TurnosSelect<T extends boolean = true> {
   estado?: T;
   codigo?: T;
   creadoDesde?: T;
+  claveAgenda?: T;
   resumen?: T;
   updatedAt?: T;
   createdAt?: T;

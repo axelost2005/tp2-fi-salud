@@ -3,7 +3,7 @@ import type { CollectionConfig, TextFieldSingleValidation } from 'payload'
 import { accesoTurnos, esAdmin, gestionaTurnos, gestionaTurnosCampo } from '../../access/roles'
 import { OBRAS_SOCIALES } from '../../utilities/cartilla'
 import { ESTADOS_TURNO } from '../../utilities/turnos'
-import { armarResumen, asignarCodigo, normalizarFecha, validarTurno } from './hooks'
+import { armarResumen, asignarCodigo, calcularClaveAgenda, normalizarFecha, validarTurno } from './hooks'
 
 const validarHora: TextFieldSingleValidation = (value) =>
   !value || /^([01]\d|2[0-3]):[0-5]\d$/.test(value) || 'Usá el formato de 24 horas, por ejemplo 08:20.'
@@ -189,6 +189,14 @@ export const Turnos: CollectionConfig<'turnos'> = {
       ],
       access: soloGestion,
       admin: { position: 'sidebar', readOnly: true },
+    },
+    {
+      name: 'claveAgenda',
+      type: 'text',
+      label: 'Clave de agenda',
+      unique: true,
+      admin: { hidden: true },
+      hooks: { beforeChange: [calcularClaveAgenda] },
     },
     {
       name: 'resumen',
