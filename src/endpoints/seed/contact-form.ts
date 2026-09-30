@@ -1,111 +1,52 @@
-import { RequiredDataFromCollectionSlug } from 'payload'
+import type { RequiredDataFromCollectionSlug } from 'payload'
 
+import { lexical } from './salud/lexical'
+
+/**
+ * Formulario de contacto de ejemplo (plugin Form Builder). Cambios respecto
+ * del template: textos en español, "Asunto" como lista desplegable y el
+ * teléfono como texto (el template lo pedía como número y perdía el 0 inicial
+ * y los guiones).
+ */
 export const contactForm: RequiredDataFromCollectionSlug<'forms'> = {
-  confirmationMessage: {
-    root: {
-      type: 'root',
-      children: [
-        {
-          type: 'heading',
-          children: [
-            {
-              type: 'text',
-              detail: 0,
-              format: 0,
-              mode: 'normal',
-              style: '',
-              text: 'The contact form has been submitted successfully.',
-              version: 1,
-            },
-          ],
-          direction: 'ltr',
-          format: '',
-          indent: 0,
-          tag: 'h2',
-          version: 1,
-        },
-      ],
-      direction: 'ltr',
-      format: '',
-      indent: 0,
-      version: 1,
-    },
-  },
+  title: 'Formulario de contacto',
+  submitButtonLabel: 'Enviar mensaje',
   confirmationType: 'message',
-  createdAt: '2023-01-12T21:47:41.374Z',
+  confirmationMessage: lexical([
+    { tipo: 'h2', texto: 'Recibimos tu mensaje' },
+    { tipo: 'p', texto: 'Te respondemos dentro de las 48 horas hábiles. Gracias por escribirnos.' },
+  ]),
   emails: [
     {
-      emailFrom: '"Payload" \u003Cdemo@payloadcms.com\u003E',
+      emailFrom: '"Confluencia Salud" <no-responder@confluenciasalud.com.ar>',
       emailTo: '{{email}}',
-      message: {
-        root: {
-          type: 'root',
-          children: [
-            {
-              type: 'paragraph',
-              children: [
-                {
-                  type: 'text',
-                  detail: 0,
-                  format: 0,
-                  mode: 'normal',
-                  style: '',
-                  text: 'Your contact form submission was successfully received.',
-                  version: 1,
-                },
-              ],
-              direction: 'ltr',
-              format: '',
-              indent: 0,
-              textFormat: 0,
-              version: 1,
-            },
-          ],
-          direction: 'ltr',
-          format: '',
-          indent: 0,
-          version: 1,
+      subject: 'Recibimos tu mensaje',
+      message: lexical([
+        {
+          tipo: 'p',
+          texto: 'Hola {{nombre}}: recibimos tu consulta y te vamos a responder dentro de las 48 horas hábiles.',
         },
-      },
-      subject: "You've received a new message.",
+      ]),
     },
   ],
   fields: [
+    { name: 'nombre', blockName: 'nombre', blockType: 'text', label: 'Nombre y apellido', required: true, width: 50 },
+    { name: 'email', blockName: 'email', blockType: 'email', label: 'Email', required: true, width: 50 },
+    { name: 'telefono', blockName: 'telefono', blockType: 'text', label: 'Teléfono', required: false, width: 50 },
     {
-      name: 'full-name',
-      blockName: 'full-name',
-      blockType: 'text',
-      label: 'Full Name',
+      name: 'asunto',
+      blockName: 'asunto',
+      blockType: 'select',
+      label: 'Asunto',
       required: true,
-      width: 100,
+      width: 50,
+      options: [
+        { label: 'Consulta administrativa', value: 'administrativa' },
+        { label: 'Obras sociales y facturación', value: 'obras-sociales' },
+        { label: 'Sugerencias o reclamos', value: 'sugerencias' },
+        { label: 'Otro', value: 'otro' },
+      ],
     },
-    {
-      name: 'email',
-      blockName: 'email',
-      blockType: 'email',
-      label: 'Email',
-      required: true,
-      width: 100,
-    },
-    {
-      name: 'phone',
-      blockName: 'phone',
-      blockType: 'number',
-      label: 'Phone',
-      required: false,
-      width: 100,
-    },
-    {
-      name: 'message',
-      blockName: 'message',
-      blockType: 'textarea',
-      label: 'Message',
-      required: true,
-      width: 100,
-    },
+    { name: 'mensaje', blockName: 'mensaje', blockType: 'textarea', label: 'Mensaje', required: true, width: 100 },
   ],
-  redirect: undefined,
-  submitButtonLabel: 'Submit',
-  title: 'Contact Form',
-  updatedAt: '2023-01-12T21:47:41.374Z',
 }
