@@ -71,6 +71,8 @@ export interface Config {
     posts: Post;
     media: Media;
     categories: Category;
+    especialidades: Especialidad;
+    profesionales: Profesional;
     users: User;
     redirects: Redirect;
     forms: Form;
@@ -93,6 +95,8 @@ export interface Config {
     posts: PostsSelect<false> | PostsSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
     categories: CategoriesSelect<false> | CategoriesSelect<true>;
+    especialidades: EspecialidadesSelect<false> | EspecialidadesSelect<true>;
+    profesionales: ProfesionalesSelect<false> | ProfesionalesSelect<true>;
     users: UsersSelect<false> | UsersSelect<true>;
     redirects: RedirectsSelect<false> | RedirectsSelect<true>;
     forms: FormsSelect<false> | FormsSelect<true>;
@@ -203,7 +207,7 @@ export interface Page {
       | null;
     media?: (number | null) | Media;
   };
-  layout: (CallToActionBlock | ContentBlock | MediaBlock | ArchiveBlock | FormBlock)[];
+  layout: (CallToActionBlock | ContentBlock | MediaBlock | ArchiveBlock | FormBlock | EspecialidadesDestacadasBlock)[];
   meta?: {
     title?: string | null;
     /**
@@ -784,6 +788,169 @@ export interface Form {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "EspecialidadesDestacadasBlock".
+ */
+export interface EspecialidadesDestacadasBlock {
+  titulo: string;
+  introduccion?: string | null;
+  cantidad?: number | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'especialidadesDestacadas';
+}
+/**
+ * Áreas de atención. Se muestran en el sitio y se usan para filtrar la cartilla y pedir turnos.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "especialidades".
+ */
+export interface Especialidad {
+  id: number;
+  nombre: string;
+  icono:
+    | 'estetoscopio'
+    | 'corazon'
+    | 'bebe'
+    | 'hueso'
+    | 'cerebro'
+    | 'ojo'
+    | 'sonrisa'
+    | 'mano'
+    | 'manzana'
+    | 'oido'
+    | 'venus'
+    | 'persona'
+    | 'microscopio'
+    | 'jeringa';
+  /**
+   * Menor número, aparece primero.
+   */
+  orden?: number | null;
+  destacada?: boolean | null;
+  /**
+   * Una o dos oraciones para las tarjetas (máximo 180 caracteres).
+   */
+  resumen: string;
+  descripcion?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  /**
+   * When enabled, the slug will auto-generate from the title field on save and autosave.
+   */
+  generateSlug?: boolean | null;
+  slug: string;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * Cartilla de profesionales. Solo los marcados como visibles aparecen en el sitio.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "profesionales".
+ */
+export interface Profesional {
+  id: number;
+  tratamiento?: ('Dr.' | 'Dra.' | 'Lic.') | null;
+  nombre: string;
+  apellido: string;
+  /**
+   * Se completa solo con el tratamiento, el nombre y el apellido.
+   */
+  nombreCompleto?: string | null;
+  /**
+   * MP (provincial) o MN (nacional) seguida del número. Ej.: MP 4521
+   */
+  matricula: string;
+  especialidades: (number | Especialidad)[];
+  foto?: (number | null) | Media;
+  bio?: string | null;
+  /**
+   * Con estos datos se calculan los horarios disponibles para pedir turno.
+   */
+  atencion: {
+    dias: ('lunes' | 'martes' | 'miercoles' | 'jueves' | 'viernes' | 'sabado')[];
+    horaInicio:
+      | '07:00'
+      | '07:30'
+      | '08:00'
+      | '08:30'
+      | '09:00'
+      | '09:30'
+      | '10:00'
+      | '10:30'
+      | '11:00'
+      | '11:30'
+      | '12:00'
+      | '12:30'
+      | '13:00'
+      | '13:30'
+      | '14:00'
+      | '14:30'
+      | '15:00'
+      | '15:30'
+      | '16:00'
+      | '16:30'
+      | '17:00'
+      | '17:30'
+      | '18:00'
+      | '18:30'
+      | '19:00'
+      | '19:30'
+      | '20:00'
+      | '20:30'
+      | '21:00';
+    horaFin:
+      | '07:00'
+      | '07:30'
+      | '08:00'
+      | '08:30'
+      | '09:00'
+      | '09:30'
+      | '10:00'
+      | '10:30'
+      | '11:00'
+      | '11:30'
+      | '12:00'
+      | '12:30'
+      | '13:00'
+      | '13:30'
+      | '14:00'
+      | '14:30'
+      | '15:00'
+      | '15:30'
+      | '16:00'
+      | '16:30'
+      | '17:00'
+      | '17:30'
+      | '18:00'
+      | '18:30'
+      | '19:00'
+      | '19:30'
+      | '20:00'
+      | '20:30'
+      | '21:00';
+    duracionTurno: number;
+  };
+  obrasSociales?:
+    ('particular' | 'issn' | 'pami' | 'osde' | 'swiss-medical' | 'galeno' | 'sancor-salud' | 'osecac')[] | null;
+  activo?: boolean | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "redirects".
  */
 export interface Redirect {
@@ -989,6 +1156,14 @@ export interface PayloadLockedDocument {
         value: number | Category;
       } | null)
     | ({
+        relationTo: 'especialidades';
+        value: number | Especialidad;
+      } | null)
+    | ({
+        relationTo: 'profesionales';
+        value: number | Profesional;
+      } | null)
+    | ({
         relationTo: 'users';
         value: number | User;
       } | null)
@@ -1090,6 +1265,7 @@ export interface PagesSelect<T extends boolean = true> {
         mediaBlock?: T | MediaBlockSelect<T>;
         archive?: T | ArchiveBlockSelect<T>;
         formBlock?: T | FormBlockSelect<T>;
+        especialidadesDestacadas?: T | EspecialidadesDestacadasBlockSelect<T>;
       };
   meta?:
     | T
@@ -1186,6 +1362,17 @@ export interface FormBlockSelect<T extends boolean = true> {
   form?: T;
   enableIntro?: T;
   introContent?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "EspecialidadesDestacadasBlock_select".
+ */
+export interface EspecialidadesDestacadasBlockSelect<T extends boolean = true> {
+  titulo?: T;
+  introduccion?: T;
+  cantidad?: T;
   id?: T;
   blockName?: T;
 }
@@ -1331,6 +1518,48 @@ export interface CategoriesSelect<T extends boolean = true> {
         label?: T;
         id?: T;
       };
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "especialidades_select".
+ */
+export interface EspecialidadesSelect<T extends boolean = true> {
+  nombre?: T;
+  icono?: T;
+  orden?: T;
+  destacada?: T;
+  resumen?: T;
+  descripcion?: T;
+  generateSlug?: T;
+  slug?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "profesionales_select".
+ */
+export interface ProfesionalesSelect<T extends boolean = true> {
+  tratamiento?: T;
+  nombre?: T;
+  apellido?: T;
+  nombreCompleto?: T;
+  matricula?: T;
+  especialidades?: T;
+  foto?: T;
+  bio?: T;
+  atencion?:
+    | T
+    | {
+        dias?: T;
+        horaInicio?: T;
+        horaFin?: T;
+        duracionTurno?: T;
+      };
+  obrasSociales?: T;
+  activo?: T;
   updatedAt?: T;
   createdAt?: T;
 }
