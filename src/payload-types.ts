@@ -227,6 +227,8 @@ export interface Page {
   _status?: ('draft' | 'published') | null;
 }
 /**
+ * Artículos de prevención y cuidado de la salud. Cada nota puede indicar qué profesional la revisó.
+ *
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "posts".
  */
@@ -261,6 +263,15 @@ export interface Post {
   };
   publishedAt?: string | null;
   authors?: (number | User)[] | null;
+  /**
+   * Profesional de la cartilla que validó el contenido médico.
+   */
+  revisadoPor?: (number | null) | Profesional;
+  /**
+   * Se calcula solo al guardar.
+   */
+  tiempoLectura?: number | null;
+  mostrarAviso?: boolean | null;
   populatedAuthors?:
     | {
         id?: string | null;
@@ -452,6 +463,157 @@ export interface User {
     | null;
   password?: string | null;
   collection: 'users';
+}
+/**
+ * Cartilla de profesionales. Solo los marcados como visibles aparecen en el sitio.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "profesionales".
+ */
+export interface Profesional {
+  id: number;
+  tratamiento?: ('Dr.' | 'Dra.' | 'Lic.') | null;
+  nombre: string;
+  apellido: string;
+  /**
+   * Se completa solo con el tratamiento, el nombre y el apellido.
+   */
+  nombreCompleto?: string | null;
+  /**
+   * MP (provincial) o MN (nacional) seguida del número. Ej.: MP 4521
+   */
+  matricula: string;
+  especialidades: (number | Especialidad)[];
+  foto?: (number | null) | Media;
+  bio?: string | null;
+  /**
+   * Con estos datos se calculan los horarios disponibles para pedir turno.
+   */
+  atencion: {
+    dias: ('lunes' | 'martes' | 'miercoles' | 'jueves' | 'viernes' | 'sabado')[];
+    horaInicio:
+      | '07:00'
+      | '07:30'
+      | '08:00'
+      | '08:30'
+      | '09:00'
+      | '09:30'
+      | '10:00'
+      | '10:30'
+      | '11:00'
+      | '11:30'
+      | '12:00'
+      | '12:30'
+      | '13:00'
+      | '13:30'
+      | '14:00'
+      | '14:30'
+      | '15:00'
+      | '15:30'
+      | '16:00'
+      | '16:30'
+      | '17:00'
+      | '17:30'
+      | '18:00'
+      | '18:30'
+      | '19:00'
+      | '19:30'
+      | '20:00'
+      | '20:30'
+      | '21:00';
+    horaFin:
+      | '07:00'
+      | '07:30'
+      | '08:00'
+      | '08:30'
+      | '09:00'
+      | '09:30'
+      | '10:00'
+      | '10:30'
+      | '11:00'
+      | '11:30'
+      | '12:00'
+      | '12:30'
+      | '13:00'
+      | '13:30'
+      | '14:00'
+      | '14:30'
+      | '15:00'
+      | '15:30'
+      | '16:00'
+      | '16:30'
+      | '17:00'
+      | '17:30'
+      | '18:00'
+      | '18:30'
+      | '19:00'
+      | '19:30'
+      | '20:00'
+      | '20:30'
+      | '21:00';
+    duracionTurno: number;
+  };
+  obrasSociales?:
+    ('particular' | 'issn' | 'pami' | 'osde' | 'swiss-medical' | 'galeno' | 'sancor-salud' | 'osecac')[] | null;
+  activo?: boolean | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * Áreas de atención. Se muestran en el sitio y se usan para filtrar la cartilla y pedir turnos.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "especialidades".
+ */
+export interface Especialidad {
+  id: number;
+  nombre: string;
+  icono:
+    | 'estetoscopio'
+    | 'corazon'
+    | 'bebe'
+    | 'hueso'
+    | 'cerebro'
+    | 'ojo'
+    | 'sonrisa'
+    | 'mano'
+    | 'manzana'
+    | 'oido'
+    | 'venus'
+    | 'persona'
+    | 'microscopio'
+    | 'jeringa';
+  /**
+   * Menor número, aparece primero.
+   */
+  orden?: number | null;
+  destacada?: boolean | null;
+  /**
+   * Una o dos oraciones para las tarjetas (máximo 180 caracteres).
+   */
+  resumen: string;
+  descripcion?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  /**
+   * When enabled, the slug will auto-generate from the title field on save and autosave.
+   */
+  generateSlug?: boolean | null;
+  slug: string;
+  updatedAt: string;
+  createdAt: string;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -797,157 +959,6 @@ export interface EspecialidadesDestacadasBlock {
   id?: string | null;
   blockName?: string | null;
   blockType: 'especialidadesDestacadas';
-}
-/**
- * Áreas de atención. Se muestran en el sitio y se usan para filtrar la cartilla y pedir turnos.
- *
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "especialidades".
- */
-export interface Especialidad {
-  id: number;
-  nombre: string;
-  icono:
-    | 'estetoscopio'
-    | 'corazon'
-    | 'bebe'
-    | 'hueso'
-    | 'cerebro'
-    | 'ojo'
-    | 'sonrisa'
-    | 'mano'
-    | 'manzana'
-    | 'oido'
-    | 'venus'
-    | 'persona'
-    | 'microscopio'
-    | 'jeringa';
-  /**
-   * Menor número, aparece primero.
-   */
-  orden?: number | null;
-  destacada?: boolean | null;
-  /**
-   * Una o dos oraciones para las tarjetas (máximo 180 caracteres).
-   */
-  resumen: string;
-  descripcion?: {
-    root: {
-      type: string;
-      children: {
-        type: any;
-        version: number;
-        [k: string]: unknown;
-      }[];
-      direction: ('ltr' | 'rtl') | null;
-      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-      indent: number;
-      version: number;
-    };
-    [k: string]: unknown;
-  } | null;
-  /**
-   * When enabled, the slug will auto-generate from the title field on save and autosave.
-   */
-  generateSlug?: boolean | null;
-  slug: string;
-  updatedAt: string;
-  createdAt: string;
-}
-/**
- * Cartilla de profesionales. Solo los marcados como visibles aparecen en el sitio.
- *
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "profesionales".
- */
-export interface Profesional {
-  id: number;
-  tratamiento?: ('Dr.' | 'Dra.' | 'Lic.') | null;
-  nombre: string;
-  apellido: string;
-  /**
-   * Se completa solo con el tratamiento, el nombre y el apellido.
-   */
-  nombreCompleto?: string | null;
-  /**
-   * MP (provincial) o MN (nacional) seguida del número. Ej.: MP 4521
-   */
-  matricula: string;
-  especialidades: (number | Especialidad)[];
-  foto?: (number | null) | Media;
-  bio?: string | null;
-  /**
-   * Con estos datos se calculan los horarios disponibles para pedir turno.
-   */
-  atencion: {
-    dias: ('lunes' | 'martes' | 'miercoles' | 'jueves' | 'viernes' | 'sabado')[];
-    horaInicio:
-      | '07:00'
-      | '07:30'
-      | '08:00'
-      | '08:30'
-      | '09:00'
-      | '09:30'
-      | '10:00'
-      | '10:30'
-      | '11:00'
-      | '11:30'
-      | '12:00'
-      | '12:30'
-      | '13:00'
-      | '13:30'
-      | '14:00'
-      | '14:30'
-      | '15:00'
-      | '15:30'
-      | '16:00'
-      | '16:30'
-      | '17:00'
-      | '17:30'
-      | '18:00'
-      | '18:30'
-      | '19:00'
-      | '19:30'
-      | '20:00'
-      | '20:30'
-      | '21:00';
-    horaFin:
-      | '07:00'
-      | '07:30'
-      | '08:00'
-      | '08:30'
-      | '09:00'
-      | '09:30'
-      | '10:00'
-      | '10:30'
-      | '11:00'
-      | '11:30'
-      | '12:00'
-      | '12:30'
-      | '13:00'
-      | '13:30'
-      | '14:00'
-      | '14:30'
-      | '15:00'
-      | '15:30'
-      | '16:00'
-      | '16:30'
-      | '17:00'
-      | '17:30'
-      | '18:00'
-      | '18:30'
-      | '19:00'
-      | '19:30'
-      | '20:00'
-      | '20:30'
-      | '21:00';
-    duracionTurno: number;
-  };
-  obrasSociales?:
-    ('particular' | 'issn' | 'pami' | 'osde' | 'swiss-medical' | 'galeno' | 'sancor-salud' | 'osecac')[] | null;
-  activo?: boolean | null;
-  updatedAt: string;
-  createdAt: string;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1395,6 +1406,9 @@ export interface PostsSelect<T extends boolean = true> {
       };
   publishedAt?: T;
   authors?: T;
+  revisadoPor?: T;
+  tiempoLectura?: T;
+  mostrarAviso?: T;
   populatedAuthors?:
     | T
     | {
