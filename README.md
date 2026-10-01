@@ -23,7 +23,7 @@ Trabajo Práctico N.º 2 "CMS y Frameworks Web" de Frameworks e Interoperabilida
 | Cambios respecto del template | Lista de modificaciones (consigna 2.b) | [`docs/cambios-template.md`](docs/cambios-template.md) |
 | Pruebas | Pruebas automáticas y manuales con resultados | [`docs/pruebas.md`](docs/pruebas.md) |
 | Informe | PDF de la entrega y su fuente HTML (`python generar.py` lo regenera) | [`docs/informe`](docs/informe) |
-| Tablero | Tareas del trabajo, con la rama de cada una | [`docs/tablero.md`](docs/tablero.md) y Linear |
+| Tablero | Tareas del trabajo en Linear, con la rama de cada una | [Linear](https://linear.app/casdjkojadkasjdjka/project/tp2-cms-y-frameworks-web-3aabda23a78c) y copia en [`docs/tablero.md`](docs/tablero.md) |
 | Registro de cambios | Cambios por versión | [`CHANGELOG.md`](CHANGELOG.md) |
 
 La consigna pide al menos tres módulos; hay cuatro. Si hace falta recortar para la exposición, Turnos es el más completo y el que mejor muestra el framework.

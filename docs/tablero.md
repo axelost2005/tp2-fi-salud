@@ -1,42 +1,58 @@
 # Tablero de trabajo (Linear)
 
-Tareas del TP2 para cargar en Linear y compartir con los docentes. Cada tarea indica la rama de Git donde se hizo, para vincularlas.
+Las tareas del TP2 están en Linear, en el proyecto **"TP2 · CMS y Frameworks Web"**:
+<https://linear.app/casdjkojadkasjdjka/project/tp2-cms-y-frameworks-web-3aabda23a78c>
 
-Estados: **Backlog → En curso → En revisión → Hecho**. Etiquetas: `consigna-1` (elección), `consigna-2` (template), `consigna-3` (módulos), `consigna-4` (exposición), `docs`, `bug`.
+Esta es una copia de referencia. Cada tarea indica la rama de Git donde se hizo; el detalle (qué se hizo, cómo se probó y qué decisión la justifica) está en la descripción de cada tarea en Linear.
 
-## Hecho
+- **Hitos:** uno por cada parte de la consigna.
+- **Estados:** Backlog → Todo → In Progress → Done.
+- **Etiquetas:** Feature (módulos), Improvement (cambios al template e infraestructura), Bug (errores corregidos), Docs (documentación, informe y presentación).
 
-| # | Tarea | Etiqueta | Rama |
+## 1 · Elección del CMS y del framework
+
+| Tarea | Linear | Estado | Rama |
 |---|---|---|---|
-| 1 | Investigar CMS y frameworks y armar matrices de comparación | consigna-1 | — (`docs/decisiones.md`) |
-| 2 | Instalar el template *website* de Payload con PostgreSQL y capturar el "antes" | consigna-2 | `main` (tag `template-original`) |
-| 3 | Definir la identidad visual Confluencia (paleta, tipografía, logo) | consigna-2 | `feature/tema-salud` |
-| 4 | Encabezado con guardia 24 h, menú móvil y pie institucional | consigna-2 | `feature/tema-salud` |
-| 5 | Traducir sitio y panel al español | consigna-2 | `feature/tema-salud` |
-| 6 | Módulo Usuarios y roles | consigna-3 | `feature/usuarios-roles` |
-| 7 | Módulo Cartilla: colecciones Especialidades y Profesionales | consigna-3 | `feature/cartilla` |
-| 8 | Módulo Cartilla: páginas y filtros | consigna-3 | `feature/cartilla` |
-| 9 | Módulo Novedades de salud | consigna-3 | `feature/novedades` |
-| 10 | Módulo Turnos: colección y reglas de agenda | consigna-3 | `feature/turnos` |
-| 11 | Módulo Turnos: formulario con Server Actions | consigna-3 | `feature/turnos` |
-| 12 | Módulo Turnos: tablero "Turnos de hoy" en el panel | consigna-3 | `feature/turnos` |
-| 13 | Evitar reservas simultáneas del mismo horario | bug | `fix/turnos-concurrencia` |
-| 14 | El editor no abre notas con listas | bug | `fix/panel-por-rol` |
-| 15 | Migración inicial para producción | docs | `chore/migraciones` |
-| 16 | Pruebas automáticas (unitarias, integración, punta a punta) | docs | `docs/documentacion` |
-| 17 | README, registro de decisiones y changelog | docs | `docs/documentacion` |
-| 18 | Capturas "después" | consigna-2 | `fix/panel-por-rol` |
-| 19 | Informe en PDF (borrador) | docs | `docs/informe` |
+| TP2-01 Investigar y comparar CMS y frameworks | 1-61 | Done | — (`docs/decisiones.md`) |
 
-## Pendiente
+## 2 · Template y estilos
 
-| # | Tarea | Etiqueta | Responsable |
+| Tarea | Linear | Estado | Rama |
 |---|---|---|---|
-| 20 | Completar legajos y docentes en la carátula y regenerar el informe | docs | Axel |
-| 21 | Revisar el informe completo (ortografía y contenido) | docs | Tomás |
-| 22 | Subir el repositorio a GitHub y dar acceso a los docentes | consigna-4 | Axel |
-| 23 | Compartir este tablero con los docentes | consigna-4 | Axel |
-| 24 | Levantar el proyecto en la compu de cada integrante | consigna-4 | Axel y Tomás |
-| 25 | Grabar un video de respaldo de la demo | consigna-4 | Tomás |
-| 26 | Ensayar la exposición con tiempo (los dos hablan) | consigna-4 | Axel y Tomás |
-| 27 | Entregar informe, presentación y enlaces | consigna-4 | Axel |
+| TP2-02 Instalar el template website de Payload con PostgreSQL | 1-62 | Done | `main` (tag `template-original`) |
+| TP2-03 Definir la identidad visual Confluencia | 1-63 | Done | `feature/tema-salud` |
+| TP2-04 Encabezado con guardia 24 h, menú móvil y pie institucional | 1-64 | Done | `feature/tema-salud` |
+| TP2-05 Traducir el sitio y el panel al español | 1-65 | Done | `feature/tema-salud` |
+| TP2-06 Capturas del después y lista de cambios al template | 1-66 | Done | `fix/panel-por-rol` |
+
+## 3 · Módulos
+
+| Tarea | Linear | Estado | Rama |
+|---|---|---|---|
+| TP2-07 Módulo Usuarios y roles (modificado) | 1-67 | Done | `feature/usuarios-roles` |
+| TP2-08 Módulo Cartilla: especialidades y profesionales (nuevo) | 1-68 | Done | `feature/cartilla` |
+| TP2-09 Cartilla: páginas y filtros | 1-69 | Done | `feature/cartilla` |
+| TP2-10 Módulo Novedades de salud (modificado) | 1-70 | Done | `feature/novedades` |
+| TP2-11 Módulo Turnos: colección y reglas de agenda (nuevo) | 1-71 | Done | `feature/turnos` |
+| TP2-12 Turnos: formulario de pedido con Server Actions | 1-72 | Done | `feature/turnos` |
+| TP2-13 Turnos: "Turnos de hoy" en el panel | 1-73 | Done | `feature/turnos` |
+| TP2-14 Evitar que dos personas reserven el mismo horario | 1-74 | Done | `fix/turnos-concurrencia` |
+| TP2-15 El editor no abría notas con listas | 1-75 | Done | `fix/panel-por-rol` |
+| TP2-16 Migración inicial para producción | 1-76 | Done | `chore/migraciones` |
+| TP2-17 Pruebas automáticas | 1-77 | Done | `docs/documentacion` |
+
+## 4 · Informe, presentación y demo
+
+| Tarea | Linear | Estado | Rama o responsable |
+|---|---|---|---|
+| TP2-18 README, registro de decisiones y changelog | 1-78 | Done | `docs/documentacion` |
+| TP2-19 Informe en PDF | 1-79 | Done | `docs/informe` |
+| TP2-20 Presentación | 1-80 | Done | — |
+| TP2-21 Completar legajos y docentes en el informe | 1-81 | Todo | Axel |
+| TP2-22 Revisar el informe completo | 1-82 | Todo | Tomás |
+| TP2-23 Subir el repositorio a GitHub | 1-83 | Todo | Axel |
+| TP2-24 Compartir el tablero con los docentes | 1-84 | Todo | Axel |
+| TP2-25 Levantar el proyecto en la compu de cada uno | 1-85 | Todo | Axel y Tomás |
+| TP2-26 Grabar un video de respaldo de la demo | 1-86 | Backlog | Tomás |
+| TP2-27 Ensayar la exposición | 1-87 | Todo | Axel y Tomás |
+| TP2-28 Entregar informe, presentación y enlaces | 1-88 | Todo | Axel |

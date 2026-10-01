@@ -8,31 +8,31 @@ Escala de las matrices (la misma que propone la cátedra): **1** Malo · **2** R
 
 ## D-01 · Framework: Next.js 16
 
-**Contexto.** El Trabajo Final de la Tecnicatura es una plataforma de gestión de salud hecha con React. Se busca un framework que sirva para el TF, que tenga front y back y que no obligue a conectar dos sistemas (la consigna pide no agregar interoperabilidad).
+**Contexto.** El Trabajo Final de la Tecnicatura es una plataforma de gestión de salud para organizaciones (usuarios con roles, pacientes y profesionales), hecha en TypeScript: React + Vite en el front y NestJS + Prisma + PostgreSQL en el back. El TF resuelve la gestión interna; este TP construye la cara pública de la misma plataforma (portal con contenidos y turnos). Se busca un framework que tenga front y back y que no obligue a conectar dos sistemas (la consigna pide no agregar interoperabilidad).
 
 **Criterios.** Los de la Unidad III para elegir framework: complejidad del proyecto, tiempo de aprendizaje y lenguaje de base, frecuencia de cambios, soporte, posición en el mercado y funcionalidades (seguridad, URLs y sesiones, internacionalización, ORM y controladores). Se agrega "template dentro del framework" por la actividad 2.
 
 | Criterio | Next.js | NestJS | Express |
 |---|---|---|---|
-| Se ajusta al proyecto (portal + gestión de turnos) | 4 | 3 | 2 |
-| Lenguaje de base / reutiliza el TF en React | 4 | 2 | 2 |
-| Tiempo de aprendizaje | 3 | 2 | 4 |
+| Se ajusta al proyecto (portal, contenidos y turnos) | 4 | 3 | 2 |
+| Lenguaje de base: TypeScript, como el TF | 4 | 4 | 3 |
+| Tiempo de aprendizaje (NestJS ya se usa en el TF) | 3 | 4 | 4 |
 | Frecuencia de cambios | 2 | 3 | 4 |
 | Soporte (documentación, comunidad) | 4 | 4 | 3 |
 | Posición en el mercado (descargas npm por semana, 22 al 28/09/2026) | 4 · 70 M | 3 · 17,5 M | 4 · 159 M |
 | Funcionalidades | 3 | 4 | 1 |
 | Seguridad | 3 | 4 | 2 |
-| Template dentro del framework | 4 | 2 | 2 |
-| **Total (sobre 36)** | **31** | **27** | **24** |
+| Template con front dentro del framework | 4 | 1 | 2 |
+| **Total (sobre 36)** | **31** | **30** | **25** |
 
 **Decisión.** Next.js 16 (App Router).
 
 **Descartados.**
-- **NestJS:** el más completo para APIs (módulos, guards, validación), pero es solo backend: el template tendría que ser una app React aparte, conectada por HTTP. Queda como plan B si el TF necesita un backend separado.
+- **NestJS:** es el framework del backend del TF: lo conocemos, es TypeScript y es el más completo para APIs (módulos, guards, validación). Queda a un punto de Next.js. Pero es solo backend: no trae template con front ni CMS, y el portal sería una app React aparte más un CMS, conectados por HTTP (la interoperabilidad que este TP pide no agregar). Vuelve en el TP de interoperabilidad: conectar este portal con la API NestJS del TF.
 - **Express:** microframework: solo rutas y middleware ("los componentes absolutamente necesarios", según la unidad). Estructura, validación, vistas y seguridad se hacen a mano.
 - **React solo:** su propia documentación lo define como "la biblioteca para interfaces de usuario web y nativas" y recomienda empezar con un framework. Es una librería, no un framework: no resuelve rutas, servidor ni datos.
 
-**Consecuencias.** Next.js cambia seguido (puntaje 2 en frecuencia de cambios). Se mitiga fijando versiones exactas en `package.json`.
+**Consecuencias.** Next.js cambia seguido (puntaje 2 en frecuencia de cambios). Se mitiga fijando versiones exactas en `package.json`. Con NestJS tan cerca, lo que define es el criterio propio de la consigna: el template con front.
 
 ---
 
@@ -75,7 +75,7 @@ Escala de las matrices (la misma que propone la cátedra): **1** Malo · **2** R
 
 **Por qué.** Evita dos implementaciones separadas conectadas por API (interoperabilidad, que se deja para el próximo TP) y permite mostrar las dos herramientas en una sola demo. En el código cada una queda identificada: `src/app/(frontend)` y las Server Actions son Next.js; `src/collections`, `src/globals`, `src/access` y el panel `/admin` son Payload.
 
-**Consecuencia.** Para el próximo TP (interoperabilidad), Payload ya genera APIs REST y GraphQL, así que conectar la plataforma con otros sistemas no requiere cambiar la base.
+**Consecuencia.** Para el próximo TP (interoperabilidad), Payload ya genera APIs REST y GraphQL, así que conectar la plataforma con otros sistemas, como la API NestJS del TF, no requiere cambiar la base.
 
 ---
 
@@ -85,7 +85,7 @@ Escala de las matrices (la misma que propone la cátedra): **1** Malo · **2** R
 
 **Decisión.** PostgreSQL 16 con el adaptador oficial `@payloadcms/db-postgres`.
 
-**Por qué.** Los datos del dominio son relacionales (turnos → profesional → especialidades) y hacen falta restricciones de la base, como el índice único que evita la doble reserva (D-10). Además, el equipo ya trabajó con PostgreSQL en la materia PWA.
+**Por qué.** Los datos del dominio son relacionales (turnos → profesional → especialidades) y hacen falta restricciones de la base, como el índice único que evita la doble reserva (D-10). Además, es la base del TF (con Prisma) y el equipo ya trabajó con PostgreSQL en la materia PWA.
 
 ---
 
