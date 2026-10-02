@@ -1,21 +1,21 @@
 # Tablero de trabajo (Linear)
 
-Las tareas del TP2 están en Linear, en el proyecto **"TP2 · CMS y Frameworks Web"**:
+Las tareas del TP2 están en Linear, en el proyecto **"TP2 - CMS y Frameworks Web"**:
 <https://linear.app/casdjkojadkasjdjka/project/tp2-cms-y-frameworks-web-3aabda23a78c>
 
 Esta es una copia de referencia. Cada tarea indica la rama de Git donde se hizo; el detalle (qué se hizo, cómo se probó y qué decisión la justifica) está en la descripción de cada tarea en Linear.
 
 - **Hitos:** uno por cada parte de la consigna.
-- **Estados:** Backlog → Todo → In Progress → Done.
+- **Estados:** Backlog, Todo, In Progress y Done.
 - **Etiquetas:** Feature (módulos), Improvement (cambios al template e infraestructura), Bug (errores corregidos), Docs (documentación, informe y presentación).
 
-## 1 · Elección del CMS y del framework
+## 1. Elección del CMS y del framework
 
 | Tarea | Linear | Estado | Rama |
 |---|---|---|---|
-| TP2-01 Investigar y comparar CMS y frameworks | 1-61 | Done | — (`docs/decisiones.md`) |
+| TP2-01 Investigar y comparar CMS y frameworks | 1-61 | Done | sin rama (`docs/decisiones.md`) |
 
-## 2 · Template y estilos
+## 2. Template y estilos
 
 | Tarea | Linear | Estado | Rama |
 |---|---|---|---|
@@ -25,7 +25,7 @@ Esta es una copia de referencia. Cada tarea indica la rama de Git donde se hizo;
 | TP2-05 Traducir el sitio y el panel al español | 1-65 | Done | `feature/tema-salud` |
 | TP2-06 Capturas del después y lista de cambios al template | 1-66 | Done | `fix/panel-por-rol` |
 
-## 3 · Módulos
+## 3. Módulos
 
 | Tarea | Linear | Estado | Rama |
 |---|---|---|---|
@@ -41,13 +41,13 @@ Esta es una copia de referencia. Cada tarea indica la rama de Git donde se hizo;
 | TP2-16 Migración inicial para producción | 1-76 | Done | `chore/migraciones` |
 | TP2-17 Pruebas automáticas | 1-77 | Done | `docs/documentacion` |
 
-## 4 · Informe, presentación y demo
+## 4. Informe, presentación y demo
 
 | Tarea | Linear | Estado | Rama o responsable |
 |---|---|---|---|
 | TP2-18 README, registro de decisiones y changelog | 1-78 | Done | `docs/documentacion` |
 | TP2-19 Informe en PDF | 1-79 | Done | `docs/informe` |
-| TP2-20 Presentación | 1-80 | Done | — |
+| TP2-20 Presentación | 1-80 | Done | sin rama |
 | TP2-21 Completar legajos y docentes en el informe | 1-81 | Done | `docs/entrega` |
 | TP2-22 Revisar el informe completo | 1-82 | Todo | Tomás |
 | TP2-23 Subir el repositorio a GitHub | 1-83 | Done | Axel |
@@ -56,3 +56,4 @@ Esta es una copia de referencia. Cada tarea indica la rama de Git donde se hizo;
 | TP2-26 Grabar un video de respaldo de la demo | 1-86 | Backlog | Tomás |
 | TP2-27 Ensayar la exposición (antes del mié 7/10) | 1-87 | Todo | Axel y Tomás |
 | TP2-28 Entregar informe, presentación y enlaces (vie 2/10) | 1-88 | Todo | Axel |
+| TP2-29 Exposición en clase (mié 7/10) | 1-89 | Todo | Axel y Tomás |
