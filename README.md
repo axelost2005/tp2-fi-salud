@@ -1,4 +1,4 @@
-# Confluencia Salud · TP2 Frameworks e Interoperabilidad
+# Confluencia Salud - TP2 Frameworks e Interoperabilidad
 
 Portal público y gestión de turnos para una plataforma de salud, hecho con **Next.js 16** (framework) y **Payload CMS 3** (gestor de contenidos) sobre **PostgreSQL**.
 
@@ -14,15 +14,15 @@ Trabajo Práctico N.º 2 "CMS y Frameworks Web" de Frameworks e Interoperabilida
 |---|---|---|
 | Template original | Template *website* oficial de Payload 3.90.2, sin cambios | tag `template-original` (commit `d584c53`) |
 | Tema "Confluencia" | Modificación del template: marca, paleta, tipografía, encabezado, pie y textos en español | rama `feature/tema-salud` |
-| Módulo 1 · Usuarios y roles | Módulo modificado: roles del personal y permisos | rama `feature/usuarios-roles` |
-| Módulo 2 · Cartilla | Módulo nuevo: especialidades y profesionales | rama `feature/cartilla` |
-| Módulo 3 · Novedades de salud | Módulo modificado (era "Posts") | rama `feature/novedades` |
-| Módulo 4 · Turnos online | Módulo nuevo: pedido y gestión de turnos | rama `feature/turnos` |
+| Módulo 1: Usuarios y roles | Módulo modificado: roles del personal y permisos | rama `feature/usuarios-roles` |
+| Módulo 2: Cartilla | Módulo nuevo: especialidades y profesionales | rama `feature/cartilla` |
+| Módulo 3: Novedades de salud | Módulo modificado (era "Posts") | rama `feature/novedades` |
+| Módulo 4: Turnos online | Módulo nuevo: pedido y gestión de turnos | rama `feature/turnos` |
 | Capturas antes/después | Para comparar el template con la solución | `docs/capturas/antes` y `docs/capturas/despues` |
 | Registro de decisiones | Qué se decidió, por qué y qué se descartó | [`docs/decisiones.md`](docs/decisiones.md) |
 | Cambios respecto del template | Lista de modificaciones (consigna 2.b) | [`docs/cambios-template.md`](docs/cambios-template.md) |
 | Pruebas | Pruebas automáticas y manuales con resultados | [`docs/pruebas.md`](docs/pruebas.md) |
-| Informe | PDF de la entrega y su fuente HTML (`python generar.py` lo regenera) | [`docs/informe`](docs/informe) |
+| Informe | PDF de la entrega | [`docs/informe/TP2_Ostrovsky_Sanchez.pdf`](docs/informe/TP2_Ostrovsky_Sanchez.pdf) |
 | Tablero | Tareas del trabajo en Linear, con la rama de cada una | [Linear](https://linear.app/casdjkojadkasjdjka/project/tp2-cms-y-frameworks-web-3aabda23a78c) y copia en [`docs/tablero.md`](docs/tablero.md) |
 | Registro de cambios | Cambios por versión | [`CHANGELOG.md`](CHANGELOG.md) |
 

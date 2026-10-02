@@ -2,11 +2,11 @@
 
 Decisiones tomadas durante el TP2, con su contexto, lo que se descartó y sus consecuencias. Se escribe en el momento en que se toma cada decisión; si una decisión cambia, se agrega una nueva que la reemplaza en lugar de borrar la anterior.
 
-Escala de las matrices (la misma que propone la cátedra): **1** Malo · **2** Regular · **3** Bueno · **4** Excelente.
+Escala de las matrices (la misma que propone la cátedra): **1** Malo, **2** Regular, **3** Bueno y **4** Excelente.
 
 ---
 
-## D-01 · Framework: Next.js 16
+## D-01 - Framework: Next.js 16
 
 **Contexto.** El Trabajo Final de la Tecnicatura es una plataforma de gestión de salud para organizaciones (usuarios con roles, pacientes y profesionales), hecha en TypeScript: React + Vite en el front y NestJS + Prisma + PostgreSQL en el back. El TF resuelve la gestión interna; este TP construye la cara pública de la misma plataforma (portal con contenidos y turnos). Se busca un framework que tenga front y back y que no obligue a conectar dos sistemas (la consigna pide no agregar interoperabilidad).
 
@@ -19,7 +19,7 @@ Escala de las matrices (la misma que propone la cátedra): **1** Malo · **2** R
 | Tiempo de aprendizaje (NestJS ya se usa en el TF) | 3 | 4 | 4 |
 | Frecuencia de cambios | 2 | 3 | 4 |
 | Soporte (documentación, comunidad) | 4 | 4 | 3 |
-| Posición en el mercado (descargas npm por semana, 22 al 28/09/2026) | 4 · 70 M | 3 · 17,5 M | 4 · 159 M |
+| Posición en el mercado (descargas npm por semana, 22 al 28/09/2026) | 4 (70 M) | 3 (17,5 M) | 4 (159 M) |
 | Funcionalidades | 3 | 4 | 1 |
 | Seguridad | 3 | 4 | 2 |
 | Template con front dentro del framework | 4 | 1 | 2 |
@@ -36,7 +36,7 @@ Escala de las matrices (la misma que propone la cátedra): **1** Malo · **2** R
 
 ---
 
-## D-02 · CMS: Payload 3
+## D-02 - CMS: Payload 3
 
 **Criterios.** Los de la Unidad III para elegir CMS: arquitectura, grado de desarrollo, soporte, posición en el mercado y opiniones, usabilidad, accesibilidad, seguridad, velocidad de descarga y funcionalidades ("no debe limitar las funcionalidades del proyecto"). Se agregan tiempo de aprendizaje, template con front (actividad 2) y licencia (software libre).
 
@@ -45,7 +45,7 @@ Escala de las matrices (la misma que propone la cátedra): **1** Malo · **2** R
 | Arquitectura: CMS y sitio en un solo sistema | 4 | 2 | 2 |
 | Grado de desarrollo | 3 | 4 | 3 |
 | Soporte | 3 | 4 | 2 |
-| Posición en el mercado (descargas npm por semana) | 4 · 1,04 M | 3 · 229 K | 1 · 15 K |
+| Posición en el mercado (descargas npm por semana) | 4 (1,04 M) | 3 (229 K) | 1 (15 K) |
 | Usabilidad del panel para personal no técnico | 4 | 4 | 3 |
 | Accesibilidad del sitio que se puede construir | 4 | 3 | 3 |
 | Seguridad (autenticación y permisos) | 4 | 3 | 4 |
@@ -53,7 +53,7 @@ Escala de las matrices (la misma que propone la cátedra): **1** Malo · **2** R
 | Funcionalidades para el dominio | 4 | 4 | 3 |
 | Template con front para la actividad 2 | 4 | 2 | 1 |
 | Tiempo de aprendizaje (equipo que sabe React y Node) | 3 | 4 | 3 |
-| Licencia | 4 · MIT | 3 · MIT + Enterprise | 4 · MIT |
+| Licencia | 4 (MIT) | 3 (MIT + Enterprise) | 4 (MIT) |
 | **Total (sobre 48)** | **45** | **39** | **32** |
 
 **Decisión.** Payload 3.90.2.
@@ -69,7 +69,7 @@ Escala de las matrices (la misma que propone la cátedra): **1** Malo · **2** R
 
 ---
 
-## D-03 · Un solo proyecto: el CMS montado sobre el framework
+## D-03 - Un solo proyecto: el CMS montado sobre el framework
 
 **Decisión.** Un único proyecto donde Payload vive dentro de Next.js, como Django + Wagtail o Laravel + OctoberCMS en la tabla de la cátedra.
 
@@ -79,17 +79,17 @@ Escala de las matrices (la misma que propone la cátedra): **1** Malo · **2** R
 
 ---
 
-## D-04 · Base de datos: PostgreSQL en lugar de MongoDB
+## D-04 - Base de datos: PostgreSQL en lugar de MongoDB
 
 **Contexto.** El template viene configurado con MongoDB.
 
 **Decisión.** PostgreSQL 16 con el adaptador oficial `@payloadcms/db-postgres`.
 
-**Por qué.** Los datos del dominio son relacionales (turnos → profesional → especialidades) y hacen falta restricciones de la base, como el índice único que evita la doble reserva (D-10). Además, es la base del TF (con Prisma) y el equipo ya trabajó con PostgreSQL en la materia PWA.
+**Por qué.** Los datos del dominio son relacionales (cada turno tiene un profesional y cada profesional, sus especialidades) y hacen falta restricciones de la base, como el índice único que evita la doble reserva (D-10). Además, es la base del TF (con Prisma) y el equipo ya trabajó con PostgreSQL en la materia PWA.
 
 ---
 
-## D-05 · Template: website oficial de Payload
+## D-05 - Template: website oficial de Payload
 
 **Decisión.** Template *website* de Payload 3.90.2 (MIT), equivalente a `create-payload-app -t website --db postgres`. Queda sin cambios en el tag `template-original`, con capturas en `docs/capturas/antes`.
 
@@ -97,7 +97,7 @@ Escala de las matrices (la misma que propone la cátedra): **1** Malo · **2** R
 
 ---
 
-## D-06 · Identidad visual "Confluencia"
+## D-06 - Identidad visual "Confluencia"
 
 **Decisión.**
 - **Nombre:** "Confluencia Salud" (provisorio, se cambia en `src/config/sitio.ts`). Neuquén está en la confluencia de los ríos Limay y Neuquén.
@@ -112,7 +112,7 @@ Escala de las matrices (la misma que propone la cátedra): **1** Malo · **2** R
 
 ---
 
-## D-07 · Español en todo el sistema
+## D-07 - Español en todo el sistema
 
 **Decisión.** Sitio en español rioplatense y panel de Payload en español (i18n con `@payloadcms/translations`), con etiquetas propias en colecciones, campos y bloques. Fechas en formato argentino.
 
@@ -120,7 +120,7 @@ Escala de las matrices (la misma que propone la cátedra): **1** Malo · **2** R
 
 ---
 
-## D-08 · Módulos: cuatro (la consigna pide tres)
+## D-08 - Módulos: cuatro (la consigna pide tres)
 
 | Módulo | Tipo | Qué muestra del CMS o del framework |
 |---|---|---|
@@ -133,7 +133,7 @@ Si el tiempo de exposición no alcanza para los cuatro, se prioriza Turnos, Cart
 
 ---
 
-## D-09 · Permisos en el servidor, no en la interfaz
+## D-09 - Permisos en el servidor, no en la interfaz
 
 **Decisión.** Cuatro roles (admin, editor, recepción, profesional), guardados en el token de sesión (`saveToJWT`). Los permisos se definen en `access` de cada colección (servidor). Ocultar secciones del menú (`admin.hidden`) es solo una comodidad visual.
 
@@ -145,7 +145,7 @@ Si el tiempo de exposición no alcanza para los cuatro, se prioriza Turnos, Cart
 
 ---
 
-## D-10 · Turnos: reglas en tres capas y protección contra la doble reserva
+## D-10 - Turnos: reglas en cuatro lugares y protección contra la doble reserva
 
 **Decisión.**
 1. **Formulario (navegador):** solo ofrece días de atención y horarios libres. Es comodidad, no seguridad.
@@ -157,7 +157,7 @@ Si el tiempo de exposición no alcanza para los cuatro, se prioriza Turnos, Cart
 
 ---
 
-## D-11 · Server Actions en lugar de una API REST pública para turnos
+## D-11 - Server Actions en lugar de una API REST pública para turnos
 
 **Decisión.** La API REST de la colección Turnos no admite altas públicas. El formulario usa dos Server Actions de Next.js: `consultarHorarios` (devuelve solo horas libres) y `solicitarTurno`.
 
@@ -165,15 +165,15 @@ Si el tiempo de exposición no alcanza para los cuatro, se prioriza Turnos, Cart
 
 ---
 
-## D-12 · Fechas de los turnos al mediodía UTC
+## D-12 - Fechas de los turnos al mediodía UTC
 
-**Contexto.** Argentina está en UTC−3. Un turno del 2 de octubre guardado como medianoche local queda como 1 de octubre en UTC y puede mostrarse un día antes.
+**Contexto.** La base guarda las fechas en UTC. Si un turno del 2 de octubre se guarda a la medianoche UTC, en Argentina (UTC-3) eso es el 1 de octubre a las 21 h, y se puede mostrar un día antes.
 
 **Decisión.** La fecha se guarda como el día elegido a las 12:00 UTC y la hora aparte, como texto "HH:MM". Las funciones de `utilities/turnos.ts` hacen todos los cálculos en hora de Argentina.
 
 ---
 
-## D-13 · Datos de salud: mínimos y protegidos
+## D-13 - Datos de salud: mínimos y protegidos
 
 **Decisión.**
 - Consentimiento explícito para usar los datos solo para gestionar el turno (Ley 25.326 de protección de datos personales).
@@ -185,7 +185,7 @@ Si el tiempo de exposición no alcanza para los cuatro, se prioriza Turnos, Cart
 
 ---
 
-## D-14 · Datos de ejemplo sin internet y solo para admins
+## D-14 - Datos de ejemplo sin internet y solo para admins
 
 **Contexto.** El seed del template descargaba imágenes de GitHub y lo podía ejecutar cualquier usuario logueado, aunque borra toda la base.
 
@@ -195,21 +195,21 @@ Si el tiempo de exposición no alcanza para los cuatro, se prioriza Turnos, Cart
 
 ---
 
-## D-15 · Migraciones para producción
+## D-15 - Migraciones para producción
 
 **Decisión.** En desarrollo Payload sincroniza el esquema solo ("push"). Para producción hay una migración inicial en `src/migrations` que se aplica sola al iniciar (`prodMigrations`).
 
-**Probado:** base vacía → `pnpm build` (aplica la migración) → `pnpm start` → primer usuario → datos de ejemplo → todas las rutas responden.
+**Probado:** desde una base vacía, `pnpm build` (aplica la migración), `pnpm start`, alta del primer usuario y carga de los datos de ejemplo. Todas las rutas responden.
 
 ---
 
-## D-16 · URLs en castellano
+## D-16 - URLs en castellano
 
-**Decisión.** Las novedades se publican en `/novedades` (el template usaba `/posts`) con redirección permanente desde las URLs viejas. Los slugs respetan tildes y eñes ("Clínica médica" → `clinica-medica`); el slugify de Payload las eliminaba (`clnica-mdica`). Las rutas públicas se definen en un solo archivo (`utilities/rutas.ts`).
+**Decisión.** Las novedades se publican en `/novedades` (el template usaba `/posts`) con redirección permanente desde las URLs viejas. Los slugs respetan tildes y eñes ("Clínica médica" queda `clinica-medica`); el slugify de Payload las eliminaba (`clnica-mdica`). Las rutas públicas se definen en un solo archivo (`utilities/rutas.ts`).
 
 ---
 
-## D-17 · Correcciones al template
+## D-17 - Correcciones al template
 
 Problemas del template que aparecieron durante el trabajo y se corrigieron (cada uno en su commit):
 

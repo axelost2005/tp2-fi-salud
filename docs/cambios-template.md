@@ -16,7 +16,7 @@ Para ver todos los archivos modificados: `git diff template-original main --stat
 | Botones | Rectangulares, 40 px | Píldora, 44 px mínimo, foco visible | `src/components/ui/button.tsx` |
 | Tarjetas | Imagen de alto variable, categorías en mayúsculas, "No image" | Imagen 16:10, categorías como etiquetas, isotipo si no hay foto, tiempo de lectura | `src/components/Card/` |
 | Textos enriquecidos | Colores fijos | Atados a los tokens del tema | `tailwind.config.mjs` |
-| Animación | — | Los ríos del inicio se dibujan una sola vez (respeta "reducir movimiento") | `globals.css`, `RiosIlustracion.tsx` |
+| Animación | No había | Los ríos del inicio se dibujan una sola vez (respeta "reducir movimiento") | `globals.css`, `RiosIlustracion.tsx` |
 
 ## Estructura y componentes
 
@@ -29,7 +29,7 @@ Para ver todos los archivos modificados: `git diff template-original main --stat
 | Encabezado de nota | Título blanco sobre la foto | Título sobre fondo liso, datos de autoría y lectura, foto debajo | `src/heros/PostHero/` |
 | Datos de contacto | Escritos en el código | Global "Datos institucionales" editable desde el panel | `src/globals/Institucion/` |
 | Bloques | CTA, contenido, imagen, listado, formulario | + "Especialidades destacadas" | `src/blocks/EspecialidadesDestacadas/` |
-| Accesibilidad | — | Enlace "Saltar al contenido", `lang="es"`, texto alternativo obligatorio en imágenes | `layout.tsx`, `collections/Media.ts` |
+| Accesibilidad | Sin cambios | Enlace "Saltar al contenido", `lang="es"`, texto alternativo obligatorio en imágenes | `layout.tsx`, `collections/Media.ts` |
 
 ## Contenido e idioma
 
