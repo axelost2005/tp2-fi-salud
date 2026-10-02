@@ -48,11 +48,11 @@ Esta es una copia de referencia. Cada tarea indica la rama de Git donde se hizo;
 | TP2-18 README, registro de decisiones y changelog | 1-78 | Done | `docs/documentacion` |
 | TP2-19 Informe en PDF | 1-79 | Done | `docs/informe` |
 | TP2-20 Presentación | 1-80 | Done | — |
-| TP2-21 Completar legajos y docentes en el informe | 1-81 | Todo | Axel |
+| TP2-21 Completar legajos y docentes en el informe | 1-81 | Done | `docs/entrega` |
 | TP2-22 Revisar el informe completo | 1-82 | Todo | Tomás |
-| TP2-23 Subir el repositorio a GitHub | 1-83 | Todo | Axel |
+| TP2-23 Subir el repositorio a GitHub | 1-83 | Done | Axel |
 | TP2-24 Compartir el tablero con los docentes | 1-84 | Todo | Axel |
 | TP2-25 Levantar el proyecto en la compu de cada uno | 1-85 | Todo | Axel y Tomás |
 | TP2-26 Grabar un video de respaldo de la demo | 1-86 | Backlog | Tomás |
-| TP2-27 Ensayar la exposición | 1-87 | Todo | Axel y Tomás |
-| TP2-28 Entregar informe, presentación y enlaces | 1-88 | Todo | Axel |
+| TP2-27 Ensayar la exposición (antes del mié 7/10) | 1-87 | Todo | Axel y Tomás |
+| TP2-28 Entregar informe, presentación y enlaces (vie 2/10) | 1-88 | Todo | Axel |

@@ -2,12 +2,17 @@
 
 Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/). Cada versión corresponde a una integración en `develop`; la 1.0.0 es la entrega del TP2.
 
-## [1.0.0] · 30/09/2026 · Entrega del TP2
+## [1.0.0] · 02/10/2026 · Entrega del TP2
 
 ### Agregado
 - Documentación: README, registro de decisiones, cambios respecto del template, pruebas ejecutadas y capturas antes/después.
 - Pruebas automáticas: 17 unitarias, 9 de integración y 7 de punta a punta.
-- Informe en PDF (17 páginas) con su generador, y tablero de tareas.
+- Informe en PDF (17 páginas) con su generador, y tablero de tareas en Linear.
+- Datos de la entrega en el informe: legajos, cátedra y enlaces al repositorio y al tablero.
+
+### Corregido
+- Instalación con pnpm 11: los permisos de scripts pasan a `pnpm-workspace.yaml`.
+- Tipos de las pruebas de integración de turnos.
 
 ## [0.6.0] · Panel por rol
 ### Cambiado
