@@ -30,10 +30,12 @@ La consigna pide al menos tres módulos; hay cuatro. Si hace falta recortar para
 
 ## Requisitos
 
-- Node.js 20.9 o superior (probado con 22)
-- pnpm 9 o 10 (`npm install -g pnpm`)
+- Node.js 20.9 o superior (probado con 22 y 24)
+- pnpm 9, 10 u 11 (`npm install -g pnpm`)
 - PostgreSQL 16: con Docker (`docker compose up -d db`) o instalado en la compu
 - Git
+
+> Si el TF u otro proyecto ya usa los puertos 3000 o 5432, apagalo antes de levantar este.
 
 ## Cómo levantarlo (desarrollo)
 
@@ -59,6 +61,8 @@ Después:
 3. Abrí <http://localhost:3000>.
 
 En desarrollo Payload sincroniza solo el esquema de la base ("push"). Si cambia una colección y la consola pregunta *"Accept warnings and push schema to database?"*, se puede responder `y` en una base de prueba.
+
+**Si `pnpm install` falla con `ERR_PNPM_MINIMUM_RELEASE_AGE_VIOLATION`:** pnpm 11 rechaza los paquetes publicados hace menos de 24 horas y lo calcula con el reloj de la compu. Revisá la fecha con `date`; en una máquina virtual con el reloj atrasado, `sudo timedatectl set-ntp true` la sincroniza.
 
 ### Usuarios de demo
 

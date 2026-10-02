@@ -1,0 +1,10 @@
+# Dependencias que pueden ejecutar scripts de instalación.
+# allowBuilds lo lee pnpm 11; onlyBuiltDependencies, pnpm 10.
+allowBuilds:
+  esbuild: true
+  sharp: true
+  unrs-resolver: true
+onlyBuiltDependencies:
+  - esbuild
+  - sharp
+  - unrs-resolver
