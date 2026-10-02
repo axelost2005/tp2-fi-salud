@@ -115,10 +115,10 @@ figure img { display: block; width: 100%; border: 0.6pt solid var(--borde); bord
   </svg>
   <div class="datos">
     <table>
-      <tr><th>Integrantes</th><td>Axel Ostrovsky · Legajo <span class="pendiente">[completar]</span><br>Tomás Sánchez · Legajo <span class="pendiente">[completar]</span></td></tr>
-      <tr><th>Cátedra</th><td><span class="pendiente">[nombres de los docentes]</span></td></tr>
+      <tr><th>Integrantes</th><td>Axel Ostrovsky · Legajo FAI-4744<br>Tomás Sánchez · Legajo FAI-4494</td></tr>
+      <tr><th>Cátedra</th><td>Lara Acuña y Marcos Cruz</td></tr>
       <tr><th>Carrera</th><td>Tecnicatura Universitaria en Desarrollo Web</td></tr>
-      <tr><th>Fecha</th><td>Septiembre de 2026</td></tr>
+      <tr><th>Fecha</th><td>2 de octubre de 2026</td></tr>
     </table>
   </div>
 </section>
@@ -441,7 +441,7 @@ figure img { display: block; width: 100%; border: 0.6pt solid var(--borde); bord
 <section>
 <h1 id="s6" style="margin-top:18pt">6. Organización del trabajo</h1>
 <p><b>Tablero.</b> Las tareas se organizaron en Linear, en el proyecto "TP2 · CMS y Frameworks Web", compartido con los docentes: <a href="https://linear.app/casdjkojadkasjdjka/project/tp2-cms-y-frameworks-web-3aabda23a78c">linear.app/casdjkojadkasjdjka/project/tp2-cms-y-frameworks-web-3aabda23a78c</a>. Las 28 tareas se agrupan en cuatro hitos, uno por cada parte de la consigna (elección, template y estilos, módulos, y entrega). Cada una tiene estado y prioridad, e indica la rama de Git donde se desarrolló y la decisión que la justifica.</p>
-<p><b>Repositorio.</b> <span class="pendiente">[enlace al repositorio]</span>. Se trabajó con ramas por tarea que se integran en <code>develop</code> con merge sin avance rápido (<code>--no-ff</code>), para que cada módulo quede visible en el historial; <code>main</code> guarda la versión entregada, con la etiqueta <code>v1.0.0</code> (Cuadro 9). Los mensajes de commit indican el tipo de cambio (<code>feat</code>, <code>fix</code>, <code>docs</code>, <code>chore</code>) y explican el porqué. Además del código, el repositorio contiene la documentación de los cambios que pide la consigna: <code>README.md</code> (instalación y uso), <code>CHANGELOG.md</code> (cambios por versión), <code>docs/decisiones.md</code>, <code>docs/cambios-template.md</code>, <code>docs/pruebas.md</code> y las capturas de antes y después.</p>
+<p><b>Repositorio.</b> <a href="https://github.com/axelost2005/tp2-fi-salud">github.com/axelost2005/tp2-fi-salud</a>. Se trabajó con ramas por tarea que se integran en <code>develop</code> con merge sin avance rápido (<code>--no-ff</code>), para que cada módulo quede visible en el historial; <code>main</code> guarda la versión entregada, con la etiqueta <code>v1.0.0</code> (Cuadro 9). Los mensajes de commit indican el tipo de cambio (<code>feat</code>, <code>fix</code>, <code>docs</code>, <code>chore</code>) y explican el porqué. Además del código, el repositorio contiene la documentación de los cambios que pide la consigna: <code>README.md</code> (instalación y uso), <code>CHANGELOG.md</code> (cambios por versión), <code>docs/decisiones.md</code>, <code>docs/cambios-template.md</code>, <code>docs/pruebas.md</code> y las capturas de antes y después.</p>
 <table>
   <tr><th style="width:30%">Rama o etiqueta</th><th>Contenido</th></tr>
   <tr><td><code>template-original</code> (etiqueta)</td><td>Template sin modificar, base de la comparación</td></tr>
@@ -451,7 +451,9 @@ figure img { display: block; width: 100%; border: 0.6pt solid var(--borde); bord
   <tr><td><code>feature/novedades</code></td><td>Módulo Novedades de salud</td></tr>
   <tr><td><code>feature/turnos</code></td><td>Módulo Turnos online y contenido de ejemplo</td></tr>
   <tr><td><code>fix/turnos-concurrencia</code>, <code>fix/panel-por-rol</code></td><td>Correcciones encontradas en las pruebas</td></tr>
+  <tr><td><code>fix/tipos-pruebas</code>, <code>fix/pnpm-11</code></td><td>Ajustes para instalar y probar el proyecto en otra máquina</td></tr>
   <tr><td><code>chore/migraciones</code>, <code>docs/documentacion</code></td><td>Migraciones, pruebas automáticas y documentación</td></tr>
+  <tr><td><code>docs/informe</code>, <code>docs/tablero-linear</code>, <code>docs/entrega</code></td><td>Informe, tablero y datos de la entrega</td></tr>
   <tr><td><code>develop</code> → <code>main</code> (<code>v1.0.0</code>)</td><td>Integración y versión entregada</td></tr>
 </table>
 <div class="leyenda" id="c9"><b>Cuadro 9:</b> Ramas y etiquetas del repositorio. Con <code>git log --oneline --graph --all</code> se ve la historia completa.</div>
