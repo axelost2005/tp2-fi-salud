@@ -47,6 +47,8 @@ const nuevoTurno = (hora: string, fecha = diaLibre(mendez)) => ({
   hora,
   paciente,
   profesional: mendez.id,
+  // Igual que el formulario del sitio: el turno entra pendiente
+  estado: 'pendiente' as const,
 })
 
 describe('Turnos (Local API)', () => {
