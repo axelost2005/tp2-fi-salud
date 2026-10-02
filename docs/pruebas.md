@@ -29,7 +29,7 @@ Las pruebas de integración y de punta a punta necesitan la base de desarrollo c
 | Recepción ejecuta la carga de datos de ejemplo | 403 (solo admin) |
 | 8 pedidos simultáneos para el mismo horario | 1 aceptado, 7 rechazados |
 | Actualizar a mano una clave de agenda duplicada en PostgreSQL | La base la rechaza (índice único) |
-| Instalación desde cero en producción: base vacía → build → start → primer usuario → datos de ejemplo | Migración aplicada, primer usuario admin, todas las rutas 200 |
+| Instalación desde cero en producción: base vacía, build, start, primer usuario y datos de ejemplo | Migración aplicada, primer usuario admin, todas las rutas 200 |
 | Formulario de turnos con DNI inválido y sin consentimiento | Errores junto a cada campo, sin perder lo escrito ni lo elegido |
 | El horario recién reservado se vuelve a ofrecer | No |
 | Sitio en celular (390 px), modo oscuro y menú móvil | Correcto (capturas en `docs/capturas/despues`) |
